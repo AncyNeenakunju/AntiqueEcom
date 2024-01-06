@@ -1,0 +1,136 @@
+<%- include('../layouts/adminhead'); %>
+<style>
+    /* Style for the overlay background */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    
+    /* Style for the modal box */
+    .custom-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px; /* Adjust the width as needed */
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+    }
+    
+    .modal-content {
+      text-align: center;
+    }
+    
+    .close {
+      cursor: pointer;
+    }
+    
+      
+    </style>
+<body id="reportsPage">
+
+    <!-- Existing navbar code remains unchanged -->
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Add Button -->
+                <a class="btn  float-right  bg-warning text-white" href="/admin/add-coupon">Add Coupon</a>
+
+                <!-- Coupon Table -->
+                <table class="table mt-3">
+                    <thead>
+                        <tr>
+                            <th>Coupon Code</th>
+                            <th>Discount</th>
+                            <th>Valid from</th>
+                            <th>valid To</th>
+                            <th>Actions</th>
+                          </tr>
+                    </thead>
+                    <tbody id="couponTableBody">
+                    <% for(i=0;i<coupons.length;i++) {%>
+                             <tr>
+                                <td><%=coupons[i].code%></td>
+                                <td><%=coupons[i].discountAmount%></td>
+                                <td><%=(new Date(coupons[i].validFrom)).toLocaleDateString('en-GB')%> </td>
+                                <td><%=(new Date(coupons[i].validUntil)).toLocaleDateString('en-GB') %></td>
+                                <td class="text-center">
+                                    <!--     <button  class="tm-product-delete-link">
+                                            <i class="fas fa-pencil-alt tm-product-delete-icon"></i></button> -->
+                                          <button data-coupon-id="<%=coupons[i]._id%>" class="tm-product-delete-link deleteCouponBtn">
+                                            <i class="far fa-trash-alt tm-product-delete-icon"></i> </button>
+                             </tr>
+                        <%} %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Coupon Modal (hidden by default) -->
+    <div class="overlay" id="overlay" onclick="closeModal()"></div>
+    <div id="successModal" class="custom-modal">
+      <div class="modal-content">
+          <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+       <p id="Message"></p>
+        <span class="close" onclick="closeModal()">ok</span>
+       
+      </div>
+    </div>
+
+    <!-- Your existing scripts and closing body/html tags remain unchanged -->
+<script>
+
+    document.addEventListener('click', async function (event) {
+        if (event.target.classList.contains('deleteCouponBtn')) {
+            const couponId = await event.target.getAttribute('data-coupon-id');
+             console.log(couponId)
+            try {
+                const response = await fetch(`/admin/delete-coupon/${couponId}`, {
+                    method: 'DELETE',
+                });
+    
+                const result = await response.json();
+                if (result.success) {
+                    const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="CouponDeletedSucessfully";
+                successMessage.style.color="green"
+                } else {
+                    const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="InternalServerError";
+                successMessage.style.color="red"
+                }
+            } catch (error) {
+                const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="Something Went Wrong. TryAgain";
+                successMessage.style.color="red"
+            }
+        }
+        
+    });
+    function closeModal() {
+        const successModal = document.getElementById('successModal');
+        successModal.style.display = 'none';
+        window.location.reload();
+    }
+    </script> 
+</body>
+
+</html>

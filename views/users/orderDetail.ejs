@@ -1,0 +1,284 @@
+<%- include('../layouts/header.ejs') %>
+<style>
+  /* Style for the overlay background */
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  /* Style for the modal box */
+  .custom-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px; /* Adjust the width as needed */
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+  }
+  
+  .modal-content {
+    text-align: center;
+  }
+  
+  .close {
+    cursor: pointer;
+  }
+  </style>
+<body style="background-color:white;" class="">
+    <div class="row" >
+        <div class="col-md-12 " style="margin-top:100px">
+            <section class=" card shipping-information mt-5 ml-5 w-25" >
+                <h3 style="border-bottom: 1px solid #ddd;background-color: black;color:white">ShippingInfo</h3>
+                <ul style="list-style-type: disc; padding-left: 20px;">
+                  <li><%= order.shippingAddress.name %></li>
+                  <li><%= order.shippingAddress.houseNo %></li>
+                  <li><%= order.shippingAddress.place%></li>
+                  <li><%= order.shippingAddress.postal %></li>
+                  <li><%= order.shippingAddress.District%></li>
+                  <li><%= order.shippingAddress.State%></li>
+                  <li><%= order.shippingAddress.Country %></li>
+                  <li><%= order.shippingAddress.postalCode %></li>
+                </ul>
+                <p>Payment Method: <%= order.paymentMethod %></p>
+               <!--- <p>Estimated delivery: October 30, 2023</p>
+                <p><a href="#">Track</a> <img src="/images/tracking-icon.png" alt="Tracking icon"></p> -->
+              </section>
+             
+        </div>
+        
+        <div class="col-md-8 container" style="margin-top:100px;margin-right: 100px;">
+            <div class="card mt-5">
+              <% if (order.invoiceFilePath) { %>
+                <p>Invoice: <a href="<%= invoiceDownloadRoute %>" download>Download Invoice</a></p>
+              <% } else { %>
+                <p>No invoice available.</p>
+              <% } %>
+                <div class="cardtitle d-flex justify-content-between" style="background-color: black;color:white">
+                    <h1 style="font-size: 24px; font-weight: bold;">Order#<%= order.id.toString().slice(-4) %></h1>
+                    <p style="font-size: 16px;"><%= (new Date(order.orderDate)).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                    </p>
+                    <span class="order-status" style="background-color:black; color:white;">paymentStatus:<%=order.paymentStatus%></span>
+                    <span class="order-status" style="background-color:black; color:white;">shippingCharge:<%=order.shipping%></span>
+                    <a  class="p-1 mb-0" type="link" href="/myOrder?intent=orders"  style="background: black;
+                        border: solid 2px black;
+                   border-radius: 10px;
+                   color: white;
+                   
+                     cursor: pointer;
+                     padding: 0;
+                    ">BacktoOrders</a>
+
+            </div>
+            <div class="card-body">
+                <section class="ordered-items">
+                  <div class="row">
+                    <div class="col-md-6">
+                    <h3 style="border-bottom: 1px solid #ddd;">Ordered Items</h3>
+               
+
+                  </div>
+                  <div class="col-md-6">
+                    <!-- Add the "Cancel Order" button if the order is not delivered or shipped -->
+                    
+                  </div>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Product</th>
+                          <th>Quantity</th>
+                          <th>Price</th>
+                          <th>Total</th>
+                          <th>OfferPrice</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                     
+                      <tbody>
+                        <% for(i=0;i<order.orderItems.length;i++) {%>
+                        <tr>
+                          <td><img src="/uploads/<%= order.orderItems[i].productId.images[0].filename %>" style="width:45px;height:45px"></td>
+                          <td style="font-weight: bold;"><%=order.orderItems[i].quantity%></td>
+                          <td style="font-weight: bold;"><%=order.orderItems[i].productId.price%></td>
+                          <td style="font-weight: bold;"><%=order.orderItems[i].productId.price*order.orderItems[i].quantity%></td>
+                          <td style="font-weight: bold;"><%=order.orderItems[i].price*order.orderItems[i].quantity%></td>
+                          
+                          <td style="font-weight: bold;"><%=order.orderItems[i].Orderstatus%></td>
+                         
+                            <td>
+                              <button class="p-1 cancel-order-button mb-0" type="button" data-order-id="<%= order._id %>"data-item-id="<%= order.orderItems[i]._id %>" data-product-id="<%= order.orderItems[i].productId._id %>" style="background: black;
+                                border: solid 2px black;
+                                border-radius: 10px;
+                                color: white;
+                                cursor: pointer;
+                                padding: 0;
+                                margin-right: 0px;
+                                display: <%= order.orderItems[i].Orderstatus !== 'Delivered' && order.Orderstatus !== 'Shipped' && order.orderItems[i].Orderstatus !== 'returned' && order.orderItems[i].Orderstatus !== 'cancelled'? 'block' : 'none' %>;">Cancel Order</button>
+
+                                 <% if (order.orderItems[i].Orderstatus === 'Delivered') { %>
+                              <button class="p-1 return-product-button" type="button" data-order-id="<%= order._id %>" data-item-id="<%= order.orderItems[i]._id %>" data-product-id="<%= order.orderItems[i].productId._id %>"
+                                style="background: black; border: solid 2px black; border-radius: 10px; color: white; cursor: pointer; padding: 0; margin-right: 0px;">
+                                Return Product <%= i + 1 %>
+                              </button>
+                            </td>
+                          <% } else { %>
+                            <!-- Display an empty cell if the order is not delivered -->
+                            <td></td>
+                          <% } %> 
+
+                        </tr>
+                  <%} %>
+                          
+                  </tbody>
+                 
+                  </table>
+                  </section>
+                  <% if(order.paymentStatus==="failed"||order.paymentStatus==="pending") {%>
+                  <div class="text-right">
+                    <a href="/continue-shopping" class="btn " style="background-color: black;color:white">Continue Shopping</a>
+                </div>
+                <%}%>
+                  </body>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+               
+              </div>
+              <div class="col-md-6 text-right" >
+                <h5 class="text-black " style="margin-right:50px"></h5>
+               <span></span> <strong class="text-black" id="overallTotal" style="margin-right:50px">Ordertotal:Rs.<%=order.totalAmount%></strong>
+               <h5 class="text-black"  style="margin-right:50px"></h5>
+          <span></span> <strong class="text-black" id="savedAmount" style="margin-right: 50px">Saved Amount:Rs.
+              <% 
+                  // Calculate the saved amount
+                  var savedAmount = 0;
+                  var totalAmount=0;
+                  for (var i = 0; i < order.orderItems.length; i++) {
+                     totalAmount += (order.orderItems[i].productId.price * order.orderItems[i].quantity)
+                  }
+                  // Display the saved amount
+                  savedAmount=totalAmount-order.totalAmount
+                  if (savedAmount > 0) {
+                      %> <%= savedAmount %> <% // Display the saved amount if it's greater than 0 %>
+                  <% } else { %>
+                      0 <% // Display 0 if there's no saved amount %>
+                  <% } %>
+          </strong>
+        </div>
+      </div>
+      </div>
+  </div>
+  
+</div>
+</div>
+<div  style="margin-top:200px">
+  <%- include('../layouts/footer.ejs') %>
+</div>
+  
+<div class="overlay" id="overlay" onclick="closeModal()"></div>
+<div id="successModal" class="custom-modal">
+  <div class="modal-content">
+      <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+   <p id="Message"></p>
+    <span class="close" onclick="closeModal()">ok</span>
+   
+  </div>
+</div>
+</div>
+<!-- Assume you have a button or link triggering the invoice download --->
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Attach click event handler to the Cancel Order button
+        $(".cancel-order-button").on("click", function() {
+            // Retrieve the order ID from the data attribute
+            const orderId = $(this).data("order-id");
+            const itemId = $(this).data("item-id");
+            const productId = $(this).data("product-id");
+
+            // Confirm cancellation with the user (you can customize this part)
+            const confirmation = confirm("Are you sure you want to cancel this order?");
+
+            if (confirmation) {
+                // Make an AJAX request to your server to handle the cancellation
+                $.ajax({
+                    url: "/cancelOrder", // Replace with the actual URL endpoint for canceling orders
+                    method: "POST",
+                    data: { orderId: orderId ,itemId: itemId,productId:productId},
+                    success: function(response) {
+                        // Handle success, e.g., display a message or update the UI
+                        const successModal = document.getElementById('successModal');
+            const successMessage = document.getElementById('Message');
+            successModal.style.display = 'block';
+            successMessage.innerHTML="OrderCancelledSucessfully";
+            successMessage.style.color="green"
+                    },
+                    error: function(error) {
+                        const successModal = document.getElementById('successModal');
+            const successMessage = document.getElementById('Message');
+            successModal.style.display = 'block';
+            successMessage.innerHTML="OrderNotFound/AlreadyCancelled";
+            successMessage.style.color="red"
+                    }
+                });
+            }
+        });
+     
+    });
+
+
+    $(".return-product-button").on("click", function() {
+      // Retrieve the order ID and product ID from the data attributes
+      const orderId = $(this).data("order-id");
+      const ordeItemId = $(this).data("item-id");
+      const productId = $(this).data("product-id");
+      // Make an AJAX request to your server to handle the product return
+      // Implement your return logic on the server-side
+      $.ajax({
+        url: "/returnProduct", // Replace with the actual URL endpoint for returning products
+        method: "POST",
+        data: { orderId: orderId, ordeItemId : ordeItemId,productId:productId},
+        success: function(response) {
+          // Handle success, e.g., display a message or update the UI
+          const successModal = document.getElementById('successModal');
+          const successMessage = document.getElementById('Message');
+          successModal.style.display = 'block';
+          successMessage.innerHTML = "Product Returned Successfully";
+          successMessage.style.color = "green";
+        },
+        error: function(error) {
+          const successModal = document.getElementById('successModal');
+          const successMessage = document.getElementById('Message');
+          successModal.style.display = 'block';
+          successMessage.innerHTML = "Error Returning Product";
+          successMessage.style.color = "red";
+        }
+      });
+    });
+  
+
+    function closeModal() {
+    const successModal = document.getElementById('successModal');
+    successModal.style.display = 'none';
+    window.location.reload();
+}
+</script>
+
+  
+  
+  

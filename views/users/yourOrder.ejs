@@ -1,0 +1,98 @@
+<%- include('../layouts/header.ejs') %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+  <script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script defer src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script defer src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+  
+  <script>
+    $(document).ready(function(){
+  
+    
+      let table = $('#example').DataTable({
+        
+            pageLength: 10,
+            searching:false,
+            sorting:false // Number of rows per page
+        });
+
+        // Add event listener to the next button
+        $('#example_next').on('click', function () {
+            table.page('next').draw('page');
+        });
+
+        // Add event listener to the previous button
+        $('#example_previous').on('click', function () {
+            table.page('previous').draw('page');
+        });
+
+    });
+  </script>
+  <section>
+  <div class="row" >
+
+<h1 class="mt-5 ml-5"style="margin-top:200px" >OrderHistory</h1>
+  </div>
+  <div class="container" style="margin-top:100px">
+  
+  <table id="example" class="table table-striped " style="width:100% ">
+        <thead>
+            <tr>
+                <th>OrderOn</th>
+                <th>OrderId</th>
+                <th>paymentMethod</th>
+                <th>OrderItems</th>
+                <th>TotalAmount</th>
+                <th>paymentId</th>
+                <th>PaymentStatus</th>
+                <th>Actions</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            <% for(i=0;i<order.length;i++){ %>
+            <tr>
+                <td><%= (new Date(order[i].orderDate)).toLocaleDateString('en-GB') %></td>
+                <td><%= order[i]._id.toString().slice(-4)%></td>
+                <td><%=order[i].paymentMethod%></td>
+                <td><%=order[i].orderItems.length%></td>
+                <td><%=order[i].totalAmount%></td>
+                <td><%=order[i].paymentId%></td>
+                <td><%=order[i].paymentStatus%></td>
+              
+                    <td class="btn-link"><a href="/order-details?id=<%= order[i]._id %>" style="color: orange;">Details</a></td>
+               
+            </tr>
+          <%}%>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>OrderDate</th>
+                <th>PaymentMethod</th>
+                <th>OrderItems</th>
+                <th>TotalAmount</th>
+                <th>RazorpayId</th>
+                <th>PaymentStatus</th>
+                <th>OrderId</th>
+            </tr>
+        </tfoot>
+    </table>
+    </div>
+</div>
+</section>
+<div style="margin-top:300px">
+	  <%- include('../layouts/footer.ejs') %>
+	</div>	
+
+    <!-- ... (your existing code) ... -->
+
+       
+
+    
+  
+ <script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/tiny-slider.js"></script>
+<script src="js/custom.js"></script>
+
+	</body>
+</html>

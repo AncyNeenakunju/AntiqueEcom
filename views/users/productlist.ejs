@@ -1,0 +1,165 @@
+
+<%- include('../layouts/head'); %>
+
+<%- include('../layouts/sidebar'); %>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/loginstyle.css">
+
+<body>
+  <div class="row d-flex">
+    <div class="sidebar">
+    <div  class="col-md-3 col-12"> <!-- Sidebar  -->
+      <nav  id="sidebar">
+          <div class="sidebar-header ml-0"> 
+             </div>
+        <ul>
+               <h1 class="text-white mt-5">Categories</h1>
+              <% for(i=0;i<category.length;i++) { %>
+                    <li>
+                        <a href="/productlists?categrory=<%=category[i].categoryname %>" class="text-white"><%=category[i].categoryname %></a>
+                <% } %>  
+                </ul>
+        </nav>   </div>    
+  </div>
+
+<div class="col-md-4">
+    <h1 class="text-white mt-5">Our products</h1>
+<table class="table">
+    <tbody class="text-white">
+<% for (let i = 0; i < products.length; i++) { %>
+     <tr>
+    <th scope="row"><img  id="productImage1" src="<%=imageUrls[i] %>" alt="Card image cap" data-zoom="<%=imageUrls[i] %>"></th>
+            
+            <td >
+             <table class="ml-5">
+            <tr>
+            <td class="ml-5"><h5 class="text-white" >ProductName:</h5></td>
+            <td class=" ml-5"><h5 class="text-white" >ProductName:</h5></td>
+            <td></td>
+            </tr>
+            <tr>
+            <td> <h5 class="text-white"  >Description:</h5></td>
+            <td> <h5 class="text-white"  >Description:</h5></td>
+            </tr>
+            <tr>
+
+            </tr>
+            <tr>
+            <td> <h5 class="text-white" >Price:</h5></td>
+            <td> <h5 class="text-white" >Price:</h5></td>
+    
+            </tr>
+            <tr>
+            <td> <h5 class="text-white">Stock:</h5></td> 
+            <td> <h5 class="text-white">Stock:</h5></td>
+
+           </tr>
+           <tr>
+
+           </tr>
+           <tr>
+            <td> <h5 class="text-white">Rating:</h5></td>
+            
+            <td> <h5 class="text-white">Rating:</h5></td>
+         </tr>
+         </table>
+        </td>
+        
+  </tr>
+               
+  
+         <% } %>
+ </tbody>
+  </table>
+  
+</div>
+
+  
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.6/medium-zoom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
+
+<!--<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const images = document.querySelectorAll('[data-zoom]');
+      const zoom = mediumZoom(images);
+    });
+  </script> -->
+                  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const images = document.querySelectorAll('[data-zoom]');
+        const zoom = mediumZoom(images);
+        
+        images.forEach(function (img) {
+            img.addEventListener('load', function () {
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+                const image = new Image();
+                image.src = img.src;
+
+                // Get the width and height of the image
+                const width = image.width;
+                const height = image.height;
+
+                // Set the canvas dimensions to match the image
+                canvas.width = width;
+                canvas.height = height;
+
+                // Correct the orientation based on EXIF data
+                EXIF.getData(image, function () {
+                    const orientation = EXIF.getTag(this, "Orientation");
+
+                    if (orientation >= 5 && orientation <= 8) {
+                        // Swap width and height for rotated images
+                        canvas.width = height;
+                        canvas.height = width;
+                    }
+
+                    switch (orientation) {
+                        case 2:
+                            // Horizontal flip
+                            ctx.transform(-1, 0, 0, 1, width, 0);
+                            break;
+                        case 3:
+                            // 180° rotation
+                            ctx.transform(-1, 0, 0, -1, width, height);
+                            break;
+                        case 4:
+                            // Vertical flip
+                            ctx.transform(1, 0, 0, -1, 0, height);
+                            break;
+                        case 5:
+                            // 90° counter-clockwise and vertical flip
+                            ctx.transform(0, 1, 1, 0, 0, 0);
+                            break;
+                        case 6:
+                            // 90° clockwise
+                            ctx.transform(0, 1, -1, 0, height, 0);
+                            break;
+                        case 7:
+                            // 90° clockwise and vertical flip
+                            ctx.transform(0, -1, -1, 0, height, width);
+                            break;
+                        case 8:
+                            // 90° counter-clockwise
+                            ctx.transform(0, -1, 1, 0, 0, width);
+                            break;
+                        default:
+                            // Normal orientation
+                            ctx.transform(1, 0, 0, 1, 0, 0);
+                    }
+                });
+
+                // Draw the image on the canvas with corrected orientation
+                ctx.drawImage(image, 0, 0, width, height);
+
+                // Replace the image source with the canvas data
+                img.src = canvas.toDataURL("image/jpeg");
+            });
+        });
+    });
+</script>
+</body>
+ </html>     

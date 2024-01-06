@@ -1,0 +1,31 @@
+<%- include('../layouts/adminhead.ejs', { currentPage: 'category' }) %>
+<div class="container tm-mt-big tm-mb-big">
+  <div class="row">
+    <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+      <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="tm-block-title d-inline-block">Edit Category</h2>
+          </div>
+        </div>
+        <div class="row tm-edit-product-row">
+          <div class="col-xl-6 col-lg-6 col-md-12">
+   <form action="/admin/editcategory?id=<%=category._id%>" class="tm-edit-product-form"  method="post">
+
+   <label  style="font-size:16px" class="text-white">CategoryName</label>
+   <input type="text" id="categoryName" name="categoryName" class="rounded-textbox w-100  form-control validate" value="<%=category.categoryname%>" required>
+   <input type="submit" value="Edit category" class=" mt-5 w-100 rounded-textbox btn btn-primary btn-block text-uppercase mb-3" style="color:rgb(28, 19, 19)">
+
+   <% if (typeof message !=="undefined"){ %>
+    <label class="form-check-label" for="exampleCheck1"  style="color:white" ><%=message%></label>
+   <%}%>
+
+</form>
+
+
+
+
+</div>
+</body>
+</html>
+

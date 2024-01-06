@@ -1,0 +1,192 @@
+
+<%- include('../layouts/adminhead'); %>
+<style>
+/* Style for the overlay background */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Style for the modal box */
+.custom-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px; /* Adjust the width as needed */
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.close {
+  cursor: pointer;
+}
+
+  
+</style>
+      <div class="container mt-5">
+          <h2 class="text-center mb-4 text-white">AddCoupon</h2>
+          <div class="row justify-content-center">
+              <div class="col-md-6">
+                  <form action="" method="post" id="couponForm">
+                    <div class="form-group">
+                        <label for="couponCode">Coupon Title</label>
+                        <input type="text" class="form-control" id="couponCode" name="couponTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="couponCode">Coupon Description</label>
+                        <input type="text" class="form-control" id="couponCode" name="couponDescription" required>
+                    </div>
+                   
+                      <div class="form-group">
+                          <label for="couponCode">Coupon Code</label>
+                          <input type="text" class="form-control" id="couponCode" name="couponCode" required>
+                      </div>
+                      <!-- ... (your existing code) ... -->
+
+<div class="form-group">
+    <label for="discountType">Discount Type</label>
+    <select class="form-control h-50" id="discountType" name="discountType" required>
+        <option class="" disabled selected>Choose discountType</option>
+        <option value="percentage">Percentage (%)</option>
+        <option value="flat">Flat Amount (Rs)</option>
+    </select>
+</div>
+
+<div class="form-group" id="percentageDiscount">
+    <label for="discountAmount">Discount Amount (%)</label>
+    <input type="number" class="form-control" id="discountAmount" name="discountAmount">
+</div>
+
+<div class="form-group" id="flatDiscount">
+    <label for="flatDiscountAmount">Flat Discount (Rs)</label>
+    <input type="number" class="form-control" id="flatDiscountAmount" name="flatDiscountAmount" placeholder="Rs">
+</div>
+
+<div class="form-group">
+    <label for="minPurchase">Minimum Purchase (Rs)</label>
+    <input type="text" class="form-control" id="minPurchase" name="minPurchase" placeholder="Rs">
+</div>
+
+
+
+                      
+<div class="form-group">
+    <label for="validFrom">Valid From</label>
+    <input type="date" class="form-control" id="validFrom" name="validFrom" required>
+</div>
+<div class="form-group">
+    <label for="validUntil">Valid Until</label>
+    <input type="date" class="form-control" id="validUntil" name="validUntil" required>
+    <small id="validUntilError" class="form-text text-danger"></small>
+</div>
+                      <button type="submit" class="btn btn-primary" >Add Coupon</button>
+                  </form>
+                  <div class="overlay" id="overlay" onclick="closeModal()"></div>
+                  <div id="successModal" class="custom-modal">
+                    <div class="modal-content">
+                        <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+                     <p id="Message"></p>
+                      <span class="close" onclick="closeModal()">ok</span>
+                     
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <script>
+      document.getElementById('validUntil').addEventListener('input', function () {
+        validateDates();
+    });
+
+    // Function to validate dates
+    function validateDates() {
+        // Get the values of Valid From and Valid Until
+        const validFrom = new Date(document.getElementById('validFrom').value);
+        const validUntil = new Date(document.getElementById('validUntil').value);
+
+        // Check if Valid Until is greater than Valid From
+        if (validUntil <= validFrom) {
+            document.getElementById('validUntilError').textContent = 'Valid Until must be greater than Valid From.';
+        } else {
+            document.getElementById('validUntilError').textContent = '';
+        }
+    }
+document.getElementById('discountType').addEventListener('change', function () {
+    const percentageDiscount = document.getElementById('percentageDiscount');
+    const flatDiscount = document.getElementById('flatDiscount');
+
+    if (this.value === 'percentage') {
+        percentageDiscount.style.display = 'block';
+        flatDiscount.style.display = 'none';
+    } else if (this.value === 'flat') {
+        percentageDiscount.style.display = 'none';
+        flatDiscount.style.display = 'block';
+    }
+});
+
+
+    document.getElementById('couponForm').addEventListener('submit',async function (event) {
+        event.preventDefault();
+        
+        // Simulate a form submission to the server (replace this with actual AJAX request)
+        try {
+            const response = await fetch('/admin/add-coupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(new FormData(this)),
+            });
+
+            const result = await response.json(); // Parse the JSON response
+             console.log(result)
+            if (result.success) {
+                // Show success modal
+                const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="CouponAddedSucessfully";
+                successMessage.style.color="green"
+
+            } else {
+             // Show success modal
+             const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="InternalServerError";
+                successMessage.style.color="red"
+            }
+        } catch (error) {
+            const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="Something Went Wrong. TryAgain";
+                successMessage.style.color="red"
+        }
+    });
+
+    function closeModal() {
+        const successModal = document.getElementById('successModal');
+        successModal.style.display = 'none';
+        window.location.reload();
+    }
+
+</script>
+</body>
+</html>

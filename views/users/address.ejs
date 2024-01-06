@@ -1,0 +1,68 @@
+
+<%- include('../layouts/userhead'); %>
+<style>
+  .rounded-textbox {
+    background-color: #1e1f1f;
+  border-bottom: 1px solid #080808; /* Add a border to the textbox */
+   /* Adjust the value to control the roundness of corners */
+  padding: 8px; /* Add some padding for spacing inside the textbox */
+  width: 200px;
+   /* Set the desired width */
+}
+.category-fields{
+  display:none;
+}
+
+</style>
+
+<div class="col-md-10  col-12 register ">
+    <div class="container">
+    <h1 class="text-white">Welcome  <% if(username!=="undefined"){ %><%= username %>
+<%} %></h1>
+    <div class="d-flex mt-5" ><h1 class="text-white">Profile Informations</h1><a href="" class="text-white " style="margin-left:500px">EDIT</a></div>
+    <hr class="bg-white">
+    <form action="http://localhost:3000/api/v1/admin/addproducts" method="post" enctype="multipart/form-data">
+      <!-- product Name -->
+      <div class="box">
+        <label for="firstName" class="fl fontLabel">Name</label>
+       <div class="fr">
+          <input type="text" name="productName" placeholder="" class="rounded-textbox" autofocus="on" required>
+        </div>
+        <div class="clr"></div>
+      </div>
+      <!-- First name -->
+      <hr class="bg-black">
+      <!-- Second name -->
+      <hr class="bg-black">
+      <!-- Second name -->
+      
+      <!-- Email ID -->
+    
+      <hr class="bg-black">
+      <!-- Password -->
+      
+      <hr class="bg-black"><div class="box">
+        <label for="firstName" class="fl fontLabel">Email_id</label>
+       <div class="fr">
+          <input type="text" name="price" placeholder="" class="rounded-textbox"" autofocus="on" required>
+        </div>
+        <div class="clr"></div>
+      </div>
+      <hr class="bg-black">
+      <div class="box">
+        <label for="firstName" class="fl fontLabel">Mobile_Number</label>
+       <div class="fr">
+          <input type="text" name="brand" placeholder="" class="rounded-textbox"" autofocus="on" >
+        </div>
+        <div class="clr"></div>
+      </div>
+   </div>
+  </div>
+</div>
+</div>
+</body>
+
+
+
+
+

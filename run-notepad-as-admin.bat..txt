@@ -1,0 +1,5 @@
+@echo off
+echo Set objShell = CreateObject("Shell.Application") > CreateNotepad.vbs
+echo objShell.ShellExecute "notepad.exe", "", "", "runas", 1 >> CreateNotepad.vbs
+cscript CreateNotepad.vbs
+del CreateNotepad.vbs

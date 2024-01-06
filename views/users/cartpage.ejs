@@ -1,0 +1,454 @@
+<%- include('../layouts/header.ejs') %>
+<body class="bg-white">
+  <div class="hero" >
+				<div class="container" >
+					<div class="row justify-content-between">
+						<div class="col-lg-5"  style="margin-top:200px">
+							<div class="intro-excerpt">
+								<h1>Cart</h1>
+							</div>
+						</div>
+						<div class="col-lg-7">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		<!-- End Hero Section -->
+
+		
+
+		<div class="untree_co-section before-footer-section">
+            <div class="container">
+              <div class="row mb-5">
+                <form class="col-md-12" method="post">
+                  <div class="site-blocks-table">
+                    <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                      <thead>
+                       
+                        <tr>
+                          <th class="product-thumbnail">Image</th>
+                          <th class="product-name">Product</th>
+                          <th class="product-price">Price(in Rs)</th>
+                          <th class="product-price">Offer</th>
+                          <th class="product-price">OfferPrice</th>
+                          <th class="product-quantity">Quantity</th>
+                          <th class="product-total">Total</th>
+                          <th class="product-remove">Remove</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                  
+                        <% for(i=0;i<cart.length;i++) {%>
+                         
+                            <tr data-productId="<%=cart[i].productData._id %>" data-offerId="<%=cart[i].productData.offer %>" class="productDetail" >
+                             
+                              <td class="product-thumbnail w-25">
+                            <img src="/uploads/<%=cart[i].productData.images[0].filename%>" alt="Image" class="img-fluid " style="width:15%;height:15%">
+                          </td>
+                          <td class="product-name">
+                            <h2 class="h5 text-black"><%=cart[i].productData.name%></h2>
+                          </td>
+                          <td class="price"><%=cart[i].productData.price%></td>
+                          <td class="offer" id="offerPrice"></td>
+                          <td class="offerPrice"></td>
+                          <td>
+                            <div class="input-group mb-lg-3 d-flex align-items-center  justify-content-between quantity-container" style="max-width: 120px;">
+                              <div class="input-group-prepend">
+                                <button class="btn btn-outline-black decrease" type="button">&minus;</button>
+                              </div>
+                              <input  type="text" class="form-control text-center quantity-amount" value="<%=cart[i].quantity%>" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                              <div class="input-group-append">
+                                <button class="btn btn-outline-black increase" type="button">&plus;</button>
+                              </div>
+                            </div>
+        
+                          </td>
+                         
+                          <td id="totalprice"   class="productTotal"><%=cart[i].productData.price*cart[i].quantity %></td>
+                          <td><button class="btn btn-black btn-sm delete-button" data-userId="<%= userId %>" data-productId="<%= cart[i].productData._id %>">X</button></td>
+                        </tr>
+                      <%} %>
+                       
+                      </tbody>
+                    </table>
+                    </div>
+                  </div>
+                </form>
+              </div>
+        
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row mb-5">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                    
+                    </div>
+                    <div class="col-md-6">
+                    
+                    </div>
+                  </div>
+                 <!--- <div class="row">
+                    <div class="col-md-12">
+                      <label class="text-black h4" for="coupon">Coupon</label>
+                      <p>Enter your coupon code if you have one.</p>
+                    </div>
+                    <div class="col-md-8 mb-3 mb-md-0">
+                      <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
+                    </div>
+                    <div class="col-md-4">
+                      <button class="btn btn-black">Apply Coupon</button>
+                    </div>
+                  </div>-->
+                </div>
+                <div class="col-md-6 pl-5">
+                  <div class="row justify-content-end">
+                    <div class="col-md-7">
+                      <div class="row">
+                        <div class="col-md-12 text-right border-bottom mb-5">
+                        <!---<h3 class="text-black h4 text-uppercase">Cart Totals(Rs)</h3>-->
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <h5 class="text-black ">Carttotal</h5>
+                        </div>
+                        <div class="col-md-6 text-right">
+                         <span>Rs</span> <strong class="text-black" id="overallTotal"></strong>
+                        </div>
+                      </div>
+                      
+                      
+                    <!--- <div class="row mb-5">
+                        <div class="col-md-6">
+                          <span class="text-black">Total</span>
+                        </div>
+                        <div class="col-md-6 text-right">
+                          <strong class="text-black" id="totalValue"></strong>
+                        </div>
+                      </div> -->
+        
+                      <div class="row">
+                        <div class="col-md-12">
+                          <button class="btn btn-black btn-lg py-3 btn-block " id="checkoutButton" style="display:block;background-color: black; color:white">Proceed To Checkout</button>
+                          <button class="btn btn-black btn-lg py-3 btn-block" id="cartShop" onclick="window.location='/productlists'"  style="display:none ;background-color: black; color:white">Shop</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </body>
+          <div  style="margin-top:200px">
+          <%- include('../layouts/footer.ejs') %>
+	</div>
+		
+
+    <!-- ... (your existing code) ... -->
+
+<script>
+     window.history.pushState(null, null, window.location.href);
+        window.onpopstate = function () {
+          window.history.pushState(null, null, window.location.href);
+        }
+
+
+ // Function to get updated cart details
+ function getUpdatedCartDetails() {
+      var updatedCartDetails = [];
+      var cartRows = document.querySelectorAll('.site-blocks-table tbody tr');
+
+      cartRows.forEach((row, index) => {
+        console.log(row.dataset)
+        var product = {
+          product_id: row.dataset.productid,
+          quantity: parseInt(row.querySelector('.quantity-amount').value, 10),
+          price: parseInt(row.querySelector('.price').textContent, 10),
+          offerPrice:parseInt(row.querySelector('.offerPrice').textContent, 10),
+         };
+         console.log(product)
+        updatedCartDetails.push(product);
+      });
+
+      return updatedCartDetails;
+    }
+
+        function updateDatabase() {
+      var cartDetails = getUpdatedCartDetails();
+      const totalprice = document.getElementById('overallTotal').textContent;
+
+      return fetch('/update-cart', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cart: cartDetails, totalprice: totalprice }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Database updated successfully:', data);
+        });
+    }
+        // Function to update the overall total for all products
+    function updateOverallTotal() {
+      console.log("updateTotal")
+      var overallTotal = 0;
+
+      var totalElements = document.querySelectorAll('.productTotal');
+      
+      totalElements.forEach((totalElement) => {
+        overallTotal += parseFloat(totalElement.textContent);
+      });
+
+      // Update the displayed overall total
+      document.getElementById('overallTotal').textContent = overallTotal.toFixed(2);
+      updateDatabase();
+      // Update the total value for checkout
+    //  updateCheckoutTotal();
+    }
+  document.addEventListener('DOMContentLoaded', function () {
+    
+    const quantity=document.querySelectorAll(".quantity-amount")
+    const product=document.querySelectorAll(".productDetail")
+    const offer=document.querySelectorAll(".offer")
+    const offerPrice=document.querySelectorAll(".offerPrice")
+    const totalPrice=document.querySelectorAll('.productTotal')
+    const Price=document.querySelectorAll('.price')
+    product.forEach((product,index)=>{
+      
+    updateProductTotal(quantity[index])
+    updateOverallTotal();
+      updateDatabase();
+   if(product.dataset.offerid)
+    {
+      
+      const offerId=product.dataset.offerid
+      fetch(`/calculate-discount/${offerId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any additional headers as needed
+    },
+    // You can include additional options like 'credentials', 'mode', etc.
+  })
+    .then(response => response.json())
+    .then(offerDetails => {
+
+     if(offerDetails.discountType==='percentage'){
+      offer[index].dataset.discountType='percentage'
+      offer[index].textContent=offerDetails.discountAmount+'%';
+      const Discount= Price[index].textContent-((offerDetails.discountAmount*Price[index].textContent)/100)
+      offerPrice[index].textContent=Discount;
+      totalPrice[index].textContent=totalPrice[index].textContent-Discount
+    updateProductTotal(quantity[index])
+      updateOverallTotal()
+      updateDatabase()
+     }
+     else  if(offerDetails.discountType==='fixed_amount'){
+      offer[index].dataset.discountType='fixed_amount'
+      offer[index].textContent='Rs'+offerDetails.discountAmount;
+      const Discount= Price[index].textContent-offerDetails.discountAmount
+      offerPrice[index].textContent=Discount;
+      totalPrice[index].textContent=totalPrice[index].textContent-Discount
+      updateProductTotal(quantity[index].textContent)
+      updateOverallTotal()
+      updateDatabase()
+     }
+    
+    })
+    .catch(error => {
+      console.error(`Error fetching offer details for product with offerId ${offerId}:`, error);
+    });
+  }
+ 
+  
+  })
+     
+
+   const check=document.getElementById('checkoutButton')
+    const shop=document.getElementById('cartShop')
+    const cart=`<%=cart %>`
+       console.log(cart)
+       if(cart===""){
+        shop.style.display=`block`; 
+        check.style.display=`none`; 
+       }
+        else {
+          shop.style.display=`none`; 
+        check.style.display=`block`; 
+        }
+   
+ 
+    
+   
+    // Add event listeners for changes in each product's quantity input
+    var quantityInputs = document.querySelectorAll('.quantity-amount');
+    var decreaseButtons = document.querySelectorAll('.decrease');
+    var increaseButtons = document.querySelectorAll('.increase');
+
+    quantityInputs.forEach(function (quantityInput, index) {
+      // Event listener for input changes
+     
+      quantityInput.addEventListener('input', function () {
+       updateProductTotal(quantityInput);
+      
+      })
+
+       
+      decreaseButtons[index].addEventListener('click', function () {
+        console.log("hi")
+        console.log(quantityInput)
+        decrementQuantity(quantityInput);
+        
+      });
+
+      // Event listener for increase button
+      increaseButtons[index].addEventListener('click', function () {
+        incrementQuantity(quantityInput);
+      });
+    
+  });
+
+    // Function to update the total for a specific product
+   // Function to update the total for a specific product
+ function updateProductTotal(quantityInput) {
+  var productRow = quantityInput.closest('tr');
+  var offerPrice=parseFloat(productRow.querySelector('.offerPrice').textContent);
+  var price = parseFloat(productRow.querySelector('.price').textContent);
+  var quantity = parseInt(quantityInput.value, 10);
+  var totalPriceElement = productRow.querySelector('.productTotal');
+  if(offerPrice){
+
+  var totalPrice = offerPrice * quantity;
+  }
+  else{
+    var totalPrice = price * quantity;
+  }
+  totalPriceElement.textContent = totalPrice.toFixed(2);
+  updateOverallTotal();
+   updateDatabase();
+}
+
+// ... (rest of the code)
+
+
+    // Function to decrement quantity
+    function decrementQuantity(quantityInput) {
+    var currentQuantity = parseInt(quantityInput.value, 10);
+    if (currentQuantity > 1) {
+      quantityInput.value =currentQuantity--;
+      updateProductTotal(quantityInput);
+      updateOverallTotal();
+      updateDatabase();
+      
+    } else {
+      // If the quantity is 1, set it to 1 (do not decrement further)
+      quantityInput.value = 1;
+      updateProductTotal(quantityInput);
+      updateOverallTotal();
+      updateDatabase();
+    }
+  }
+
+    // Function to increment quantity
+    function incrementQuantity(quantityInput) {
+      var currentQuantity = parseInt(quantityInput.value, 10);
+      console.log(currentQuantity);
+      updateQuantity=currentQuantity++;
+      quantityInput.value = updateQuantity;
+      console.log(quantityInput)
+      updateProductTotal(quantityInput);
+      updateOverallTotal();
+      updateDatabase();
+    }
+    
+
+    // Function to update the total value for checkout
+    function updateCheckoutTotal() {
+      var subtotal = document.getElementById('overallTotal');
+
+      var total = parseFloat(subtotal.textContent);
+      //document.getElementById('totalValue').innerHTML = total;
+    }
+
+    // Event listener for the checkout button
+    document.getElementById('checkoutButton').addEventListener('click', function () {
+      // Update the database with the current cart details
+      event.preventDefault();
+      const total = document.getElementById('overallTotal').textContent;
+      updateDatabase()
+        .then(() => {
+          // After updating the database, redirect to the checkout page
+          window.location.href = `/checkout`;
+        })
+        .catch(error => console.error('Error updating database:', error));
+    });
+
+    // Function to update the database
+  
+
+   
+  });
+
+  function deleteCartItem(userId, productId) {
+  // Assuming your server endpoint for deleting an item from the cart is /cart/deleteItem/:userId/:productId
+ 
+  const url = `/delete-cart/${userId}/${productId}`;
+
+  // Make a DELETE request to the server
+  fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any additional headers as needed
+    },
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Failed to delete item from cart: ${response.status}`);
+      }
+    })
+    .then(data => {
+     
+      console.log('Item deleted successfully:', data);
+      updateOverallTotal();
+      
+      // Optionally, you can update the UI or perform other actions
+    })
+    .catch(error => {
+      console.error('Error deleting item from cart:', error);
+    });
+}
+
+    var deleteButtons = document.querySelectorAll('.delete-button');
+
+    deleteButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        event.preventDefault();
+        console.log(button.dataset)
+        // Get userId and productId from the data attributes
+        var userId = button.dataset.userid;
+        var productId = button.dataset.productid;
+             console.log(userId,productId)
+        // Call the deleteCartItem function
+       deleteCartItem(userId, productId);
+       updateDatabase();
+        // Optionally, update the UI to reflect the deleted item
+        // For example, remove the corresponding row from the table
+        var deletedRow = button.closest('tr');
+        if (deletedRow) {
+          deletedRow.remove();
+        }
+      });
+    });
+  
+
+
+</script>
+ <script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/tiny-slider.js"></script>
+<script src="js/custom.js"></script>
+	</body>
+</html>

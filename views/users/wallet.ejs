@@ -1,0 +1,97 @@
+<%- include('../layouts/head.ejs') %>
+<%- include('../users/side.ejs') %>
+<style>
+  input[type=number] {
+background-color: #1A2226;
+border: none;
+border-bottom: 2px solid #0DB8DE;
+border-top: 0px;
+border-radius: 0px;
+font-weight: bold;
+outline: 0;
+margin-bottom: 20px;
+padding-left: 0px;
+color: #ECF0F5;
+}
+ </style>
+<div class="col-sm-6 ">
+   <div class="banner_taital ">
+
+  <main>
+    <section>
+      <h2 class="text-danger">Your Wallet Balance</h2>
+      <p id="wallet-balance">Rs.<%=walletData.balance%></p>
+    </section>
+
+    <section>
+      <h2>Wallet Actions</h2>
+      <form id="credit-form">
+        <label for="credit-amount" class="form-control-label text-danger">Credit Amount:</label>
+        <input type="number" id="credit-amount" name="credit-amount" class="form-control" required>
+        <button type="submit" class="btn btn-danger">Recharge Wallet</button>
+      </form>
+
+    
+    </section>
+  </main>
+
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <!-- Add your scripts or link to external scripts here -->
+  <script>
+    // Add your JavaScript code to update wallet balance and handle form submissions
+    document.addEventListener('DOMContentLoaded', function () {
+      // Fetch and display wallet balance on page load
+      event.preventDefault();
+      console.log(1)
+      fetch('/wallet')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          document.getElementById('wallet-balance').textContent = `Wallet Balance: ${data.balance}`;
+        });
+
+      // Handle credit form submission
+      document.getElementById('credit-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const amount = document.getElementById('credit-amount').value;
+         console.log(amount)
+        // Perform AJAX request to credit wallet
+        fetch('/wallet', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ amount }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          const options = {
+                              key: data.key,
+                                  amount: data.razorpayOrder.amount,
+                                   currency: 'INR',
+                                  name: 'Your Company Name',
+                                 description: `Payment for Order ${data.razorpayOrder.id}`,
+                                order_id: data.razorpayOrder.id,
+                                handler(response) {
+                                 window.location.href="/wallet"
+								},
+                             
+   
+             theme: {
+        color: '#F37254',
+           },
+ }          
+             const razorpay = new Razorpay(options);
+			 
+               razorpay.open();
+          console.log(data)
+         document.getElementById('wallet-balance').textContent = `Wallet Balance: ${data.balance}`;
+        });
+      });
+    });
+    
+  </script>
+
+</body>
+</html>

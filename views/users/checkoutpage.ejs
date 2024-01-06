@@ -1,0 +1,757 @@
+<%- include('../layouts/header.ejs') %>
+		<!-- End Header/Navigation -->
+		<style>
+			/* Style for the overlay background */
+			.overlay {
+			  display: none;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  width: 100%;
+			  height: 100%;
+			  background: rgba(0, 0, 0, 0.5);
+			  z-index: 1;
+			}
+			
+			/* Style for the modal box */
+			.custom-modal {
+			  display: none;
+			  position: fixed;
+			  top: 50%;
+			  left: 50%;
+			  transform: translate(-50%, -50%);
+			  width: 300px; /* Adjust the width as needed */
+			  background-color: #fff;
+			  padding: 20px;
+			  border: 1px solid #ddd;
+			  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			  z-index: 2;
+			}
+			
+			.modal-content {
+			  text-align: center;
+			}
+			
+			.close {
+			  cursor: pointer;
+			}
+			section {
+            padding-top: 250px;
+        }
+
+        /* Style for the row containing the address form and cards */
+        .address-and-cards {
+            margin-top: 50px;
+        }
+
+        /* Style for the column containing the address form */
+        .address-form-col {
+            margin-bottom: 20px; 
+        }
+
+        /* Style for the column containing the cards */
+        .cards-col {
+            margin-bottom: 20px; 
+        }
+
+        /* Add space between cards */
+        .site-block-order-table tbody tr:not(:last-child) {
+            margin-bottom: 10px;
+        }
+			
+        @media screen and (max-width: 767px) {
+            /* Adjust styles for smaller screens */
+            .hero {
+                padding-top: 150px; /* Example adjustment */
+            }
+
+            /* Add more styles as needed */
+        }
+
+        @media screen and (max-width: 575px) {
+            /* Adjust styles for even smaller screens */
+            .hero {
+                padding-top: 100px; /* Example adjustment */
+            }
+
+            /* Add more styles as needed */
+        }
+			</style>
+		<!-- Start Hero Section -->
+   
+			<div class="hero">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-lg-5">
+							<div class="intro-excerpt mt-5">
+								<h1>Checkout</h1>
+							</div>
+						</div>
+            <section>
+						<div class="col-lg-7">
+							<div class="wallet-balance">
+								<p class="text-danger font-weight-bold">Wallet Balance: <span id="walletBalance" class="text-danger">Rs.<%=walletData.balance%></span></p>
+							  </div>
+							<div class="form-group mt-3">
+    <label for="selectAddress" class="text-black">Select Address</label>
+    <select class="form-control bg-white text-dark" id="selectAddress" onchange="loadSelectedAddress()">
+		
+        <option value="-1">Choose an address</option>
+        <!-- Add dynamic options based on user's addresses -->
+		<% if(user.address.length>0) { %>
+        <% for (let i = 0; i < user.address.length; i++) { %>
+            <option value="<%= i %>" data-useraddress="<%= JSON.stringify(user.address[i])%>">
+				<%=user.address[i].name %> . <%=user.address[i].houseNo %>, <%= user.address[i].place %>, <%= user.address[i].District %>, <%= user.address[i].State %>
+            </option>
+        <% } } else{%>
+			<option value="-1">No  Saved Addres Add One</option>
+<%}%>
+    </select>
+</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		<!-- End Hero Section -->
+
+
+
+			<!-- Add this inside the form, where users enter their address -->
+
+      <div class="row address-and-cards">
+    <div class="col-md-4">
+        <div id="addressForm" style="border: 2px solid black; padding: 15px;" class="w-75 ml-5">
+            <h2 class="h3 mb-3 text-black">Billing Address</h2>
+
+            <!-- Personal Information Section -->
+            <div class="mb-3">
+                <label for="fname" class="form-label text-black">First Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control bg-white text-dark" id="fname" name="firstname" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="mobile" class="form-label text-black">Phone <span class="text-danger">*</span></label>
+                <input type="text" class="form-control bg-white text-dark" id="mobile" name="mobile" required>
+            </div>
+
+            <!-- Address Section -->
+            <div class="mb-3">
+                <label for="houseNo" class="form-label text-black">House No/Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control bg-white text-dark" id="houseNo" name="houseNo" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="place" class="form-label text-black">Place <span class="text-danger">*</span></label>
+                <input type="text" class="form-control bg-white text-dark" id="place" name="place"  required>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="post" class="form-label text-black">Post Office <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-white text-dark" id="post" name="postoffice" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="district" class="form-label text-black">District <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-white text-dark" id="district" name="district" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="state" class="form-label text-black">State <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-white text-dark" id="state" name="state" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="country" class="form-label text-black">Country <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-white text-dark" id="country" name="Country" required>
+                </div>
+            </div>
+
+            <!-- Additional Information Section -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="postal" class="form-label text-black">Postal/Zip Code</label>
+                    <input type="text" class="form-control bg-white text-dark" id="postal" name="postal">
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label text-black">Email Address <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control bg-white text-dark" id="email" name="email">
+                </div>
+            </div>
+
+      
+
+    
+
+			   </div></div>
+            <div class="col-lg-4 cards-col"  >
+				
+					<div class="row">
+						<div class="col-12 w-50 h-100" style="border: 2px solid black">
+						 
+						  <div class="" >
+						   <strong class=" text-black"> YourOrder</strong>
+							<table class="table site-block-order-table">
+							  <thead>
+								<th>Product</th>
+								<th>Price</th>
+								<th>OfferPrice</th>
+								<th>Total</th>
+
+
+							  </thead>
+							  <tbody>
+								<% for(i=0;i<cart.length;i++){%>	                   
+								 <tr>
+								  <td>  <img src="/uploads/<%=cart[i].productData.images[0].filename%>" alt="Image" class="img-fluid " style="width:15%;height:15%"><strong class="mx-2">x</strong> <%=cart[i].quantity%></td>
+								  <td><%=cart[i].productData.price%></td>
+								  <td><%=cart[i].offerPrice%></td>
+								  <% if(cart[i].offerPrice) {%>
+								  <td><%= cart[i].quantity*cart[i].offerPrice%></td>
+								  <% }else{%>
+									<td><%= cart[i].quantity*cart[i].productData.price %></td>
+								<%} %>
+								
+							   <% }%>
+								  </tr>
+							   <tr>
+								<td></td>
+								<td></td>
+								<td class="text-black font-weight-bold"><strong>cartTotal</strong></td>
+								<td class="text-black font-weight-bold" id="cartTotal"><strong><%=totalprice %></strong></td>
+							  </tr>
+							   <tr>
+								<td></td>
+								<td></td>
+								<td class="text-black font-weight-bold"><strong>Shipping</strong></td>
+								<td class="text-black font-weight-bold " id="shipping"><strong>50</strong></td>
+							  </tr>
+							 
+							  <tr>
+								<td></td>
+								<td></td>
+								<td class="text-black font-weight-bold"><strong>CouponDiscount</strong></td>
+								<td class="text-black font-weight-bold" id="discount"><strong><%=Discount%></strong></td>
+							  </tr>
+								<tr>
+									<td></td>
+								<td></td>
+								  <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+								  <td class="text-black font-weight-bold" id="order"><strong></strong></td>
+								</tr>
+							  </tbody>
+							</table>
+	</div>
+							
+						
+							<div class="overlay" id="overlay" onclick="openModal()"></div>
+	                        <div id="onlinePaymentModal" class="custom-modal">
+								<div class="modal-content">
+									<div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+									<span class="close" id="ok">&times;</span>
+									<p>Redirecting to Razorpay for Online Payment...</p>
+								</div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+	
+					
+			
+				  <!-- </form> -->
+	
+								<div class="col-lg-4 mt-md-5">
+						<!---  <h2 class="h3 mb-3 text-black">Coupon Code</h2> -->
+						<% if(coupon.length>0) { %>
+							<% for(i=0;i<coupon.length;i++){%>
+							<div class="card w-75 ml-5"  style="display:block ; border: 2px solid black">
+								
+								<h5><strong><%=coupon[i].couponTitle %>:</strong><p><%=coupon[i].couponDescription %></p></h5>
+								<div class="row">
+								<div class="col-lg-6"
+							        <p><Strong class="text-dark">CouponCode:<%=coupon[i].code %></Strong></p>
+									</div>
+									<div class="col-lg-6">
+                                    <button class="btn btn-black btn-sm  btn-block apply-btn bg-dark text-white w-100" style="display:inline-block" onclick="applyCoupon()" data-discountpercentage="<%=coupon[i].discountAmount%>" data-apply="<%=coupon[i].minPurchase%>" data-fixedAmount="<%=coupon[i].flatamount%>">ApplyCode</button>
+                                    <button class="btn btn-black btn-sm  btn-block remove-btn bg-dark text-white w-100" style="display:none" onclick="applyCoupon()" >Change Coupon</button>
+			                    </div></div>
+									<p class="error"></p>
+							</div>
+							 <%}} %>
+							 <div class="card form-group mt-5 w-75 ml-5">
+                <div class="card-body">
+								<h5>Select Payment Method:</h5>
+								<label>
+									<input type="radio" name="paymentMethod" value="COD" checked>
+									Cash on Delivery
+								</label>
+								<label>
+									<input type="radio" name="paymentMethod" value="online">
+									Online Payment
+								</label>
+								<label>
+									<input type="radio" name="paymentMethod" value="wallet">
+									Use Wallet
+								</label>
+								
+								
+							</div> 
+							<div class="form-group">
+								<button class="btn btn-black btn-sm py-3 btn-block bg-dark text-white " id="placeOrderButton">Place Order</button>
+							  </div>
+                </div>
+							</form>
+							  </div>
+							</div>
+							</div>
+							</div>
+            </section>
+						    <div class="mt-5">
+								<%- include('../layouts/footer.ejs') %>
+						  </div>	
+							<div class="overlay" id="overlay" onclick="closeModal()"></div>
+							<div id="successModal" class="custom-modal">
+							  <div class="modal-content">
+								  <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+							   <p id="Message"></p>
+								<span class="close" onclick="closeModal()">ok</span>
+							   
+							  </div>
+						
+		            
+
+		          
+		
+		
+   <!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+<!-- Your existing HTML code -->
+    function loadSelectedAddress() {
+        // Get the selected index from the dropdown
+        var selectedIndex = $("#selectAddress").val();
+
+        // Check if a valid index is selected
+        if (selectedIndex !== "-1") {
+            // Access the user's address using the selected index
+			var selectedAddressData = $("#selectAddress option:selected").data("useraddress");
+
+            console.log(selectedAddressData)
+            // Fill the form fields with the selected address details
+            document.getElementById('fname').value=JSON.parse(JSON.stringify(selectedAddressData)).name
+        
+            $("#houseNo").val(selectedAddressData.houseNo);
+            $("#place").val(selectedAddressData.place);
+            $("#post").val(selectedAddressData.postOffice);
+            $("#district").val(selectedAddressData.District);
+            $("#state").val(selectedAddressData.State);
+            $("#country").val(selectedAddressData.Country);
+            $("#postal").val(selectedAddressData.postalCode);
+            $("#email").val(selectedAddressData.email);
+            $("#mobile").val(selectedAddressData.mobile);
+        } else {
+            // Clear the form fields if no address is selected
+            $("#fname, #lname, #houseNo, #place, #post, #district, #state, #country, #postal, #email, #mobile").val("");
+		}
+    }
+
+
+			
+		document.addEventListener('DOMContentLoaded', function () {
+			//editAddress(); 
+			updateOrderTotal();
+			document.getElementById('placeOrderButton').addEventListener('click', function () {
+        // Get the selected payment method
+		const orderTotalInPaise = document.getElementById("order").textContent;
+		const couponOffer = document.getElementById("discount").textContent;
+		
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+        placeOrder(paymentMethod,orderTotalInPaise,couponOffer); // Call the function to place the order for Cash on Delivery
+        });
+	});
+function placeOrder(paymentMethod,orderTotalInPaise,couponOffer) {
+	
+	const fname=document.getElementById("fname").value
+   const hNo=document.getElementById("houseNo").value
+	const place=document.getElementById("place").value
+    const post=document.getElementById("post").value
+	const district=document.getElementById("district").value
+	const state=document.getElementById("state").value
+	const country=document.getElementById("country").value
+	const postal=document.getElementById("postal").value
+	const email=document.getElementById("email").value
+	const mobile=document.getElementById("mobile").value
+
+	if (!fname || !hNo || !place || !post || !district || !state || !country || !postal || !email || !mobile /* Add other required fields */) {
+		const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="Please choose address/add other Address";
+                successMessage.style.color="green"
+        return; 
+    }
+   else{
+
+    const shipping={
+		name: fname,
+		houseNo:hNo,
+		place:place,
+		postOffice:post,
+		District:district,
+		State:state,
+		Country:country,
+		postalCode:postal,
+		email:email,
+		mobile:mobile
+}
+
+    const orderPlacementEndpoint = 'your_order_placement_api_endpoint';
+          const orderData = {
+        total: orderTotalInPaise, 
+        paymentMethod: paymentMethod,
+		shipping,
+		couponOffer
+		
+		
+    };
+
+    // Send a POST request to the server API
+    fetch("/checkout", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Add any other necessary headers
+        },
+        body: JSON.stringify(orderData),
+    })
+    .then(response => response.json())
+    .then(data => {
+	
+        if(data.paymentMethod==="COD")
+		                {
+	        	const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="OrderPlaced Successfully";
+                successMessage.style.color="green"
+		          }
+		if(data.paymentMethod==="Online")
+		{            
+			console.log("hello")
+			          const options = {
+                              key: data.key,
+                                  amount: data.razorpayOrder.amount,
+                                   currency: 'INR',
+                                  name: 'Your Company Name',
+                                 description: `Payment for Order ${data.razorpayOrder.id}`,
+                                order_id: data.razorpayOrder.id,
+								
+                                handler(response) {
+		
+        const orderId = response.razorpay_order_id; // Replace with the actual order ID
+        updatepaymentStatus(orderId, 'paid'); // Call a function to update the order status
+
+        // You can also include payment status in your logic if needed
+        const paymentStatus = response.razorpay_payment_id; // Replace with the actual payment status field
+        console.log("Payment Status:", paymentStatus);
+
+				   
+    
+									
+			
+								},
+                               prefill: {
+                             name: `<%=user.firstname%> <%=user.lastname %>`,
+                          email: `<%=user.email%>`,
+                          contact:`<%=user.mobile%>`,
+                            },
+   
+             theme: {
+        color: '#F37254',
+           },
+ }          
+             const razorpay = new Razorpay(options);
+			 
+               razorpay.open();
+			   setInterval(() => {
+    checkPaymentStatus(data.razorpayOrder.id);
+  }, 5000);
+}
+
+if(data.paymentMethod==="wallet"){
+  if(data.success){
+	           const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="OrderPlaced Successfully";
+                successMessage.style.color="green"
+  }
+  else{
+
+	if(data.message="Insufficient wallet balance."){
+	const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="Insufficient wallet balance.";
+                successMessage.style.color="green"
+  }
+}
+ }        
+
+}).catch(error => {
+        const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="Something went Wrong? Order not placed";
+                successMessage.style.color="red"
+    });
+}
+}
+
+
+function checkPaymentStatus(orderId) {
+  fetch(`/check-payment-status?orderId=${orderId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Payment was successful, redirect or show a success message
+                 const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="OrderPlaced Successfully";
+                successMessage.style.color="green"
+      } else if (data.failure) {
+        // Payment failed, display an error message to the user
+		console.log("hello")
+		
+		window.location.href = `/paymentFailure?orderId=${data.orderId}`;
+	  
+      }
+    })
+    .catch(error => {
+      console.error('Error checking payment status:', error);
+    });
+
+  // Function to show error message (replace with your own implementation)
+  function showError(message) {
+    alert(message);
+  }
+}
+
+function updatepaymentStatus(orderId, status) {
+    fetch(`/updatepaymentStatus/${orderId}`, {
+        method: 'POST', // Use the appropriate HTTP method for updating data
+        headers: {
+            'Content-Type': 'application/json',
+            // Add any other necessary headers
+        },
+        body: JSON.stringify({ status }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success){
+			const successModal = document.getElementById('successModal');
+        const successMessage = document.getElementById('Message');
+        successModal.style.display = 'block';
+        successMessage.innerHTML = "Order Placed Successfully";
+        successMessage.style.color = "green";
+		}
+		else{
+			const successModal  = document.getElementById('successModal ');
+        const successMessage = document.getElementById('Message');
+		successModal.style.display = 'block';
+        successModal.innerHTML = `Payment failed`;
+		successModal.style.color = "red";
+		}
+    })
+    .catch(error => {
+        console.error("Error updating order status:", error);
+        // Handle the error updating order status
+    });
+}
+    function openModal(url){
+		const overlay = document.getElementById('overlay');
+    const onlinePaymentModal = document.getElementById('onlinePaymentModal');
+
+    // Show the overlay and the onlinePaymentModal
+    overlay.style.display = 'block';
+    onlinePaymentModal.style.display = 'block';
+
+    // Add any loading indicator or animation here
+    // For example, you can add a spinner or loading text
+    onlinePaymentModal.querySelector('p').innerHTML = 'Redirecting to Razorpay for Online Payment...';
+
+    // Assuming you have a variable razorpayRedirectUrl containing the Razorpay payment URL
+    // Update the variable name accordingly
+    const razorpayRedirectUrl = url; // Replace with the actual Razorpay payment URL
+
+    // Redirect the user to Razorpay
+    window.location.href = razorpayRedirectUrl;
+	}
+
+	 function updateOrderTotal() {
+    const discountElement = document.getElementById('discount');
+    const cartTotalElement = document.getElementById("cartTotal");
+    const shippingElement = document.getElementById("shipping");
+    const orderTotalElement = document.getElementById("order");
+
+    const cartTotal = parseFloat(cartTotalElement.textContent);
+    const discount = parseFloat(discountElement.textContent) || 0; // If discount is not set, default to 0
+    const shippingCharge = parseFloat(shippingElement.textContent) || 0; // If shipping charge is not set, default to 0
+
+    // Calculate the order total
+    const orderTotal = cartTotal + shippingCharge - discount;
+
+    // Update the "Order Total" cell in the HTML
+    orderTotalElement.textContent = orderTotal.toFixed(2); // Assuming you want to display the result with two decimal places
+}
+
+
+		  function editAddress() {
+
+			console.log("address")
+			const user =  ` <%=user.address%>`;
+		
+			// Get the delivery address element
+			var deliveryAddressElement = document.getElementById('deliveryAddress');
+		  
+			// Get the edit button element
+			var editButton = document.getElementById('editButton');
+		  
+			// Get the address form element
+			var addressForm = document.getElementById('addressForm');
+		  
+			// Check if the delivery address is not empty
+			if ( user !== " ") {
+			  // Hide the delivery address and show the "Edit" button
+			  deliveryAddressElement.style.display = 'inline-block';
+			//  editButton.style.display = 'inline-block'; // Show the "Edit" button
+		  
+			  // Show the address form
+			  addressForm.style.display='none'
+			} else {
+			  // No address is saved, show only the address form
+			  deliveryAddressElement.style.display = 'none';
+			  //editButton.style.display = 'none';
+		  
+			  // Show the address form
+			  addressForm.style.display='inline-block'
+			}
+		  }
+		  function showForm(){
+			addressForm.style.display='inline-block'
+		  }
+// Assuming all coupon buttons have a common class 'apply-btn'
+const couponButtons = document.querySelectorAll('.apply-btn');
+console.log(1)
+couponButtons.forEach((button,index)=> {
+  button.addEventListener('click', function() {
+      applyCoupon(button,index);
+  });
+});
+
+function applyCoupon(clickedButton,index) {
+	console.log(clickedButton)
+  const discountPercentage = clickedButton.dataset.discountpercentage;
+  const applyCondition = clickedButton.dataset.apply;
+  const fixedAmount = clickedButton.dataset.fixedamount;
+  console.log(fixedAmount)
+  const discountElement=document.getElementById('discount')
+  const cartTotal = parseFloat(document.getElementById("cartTotal").textContent);
+ 
+  if (cartTotal >= applyCondition) {
+    if(discountPercentage)
+   {
+    const discount = (discountPercentage / 100) * cartTotal;
+	discountElement.innerHTML=discount;
+    const updatedCartTotal = cartTotal - discount;
+     clickedButton.style.display="none";
+    // Update UI to show the updated cart total
+  }
+  else if(fixedAmount){
+	const discount = fixedAmount;
+	discountElement.innerHTML=discount;
+    const updatedCartTotal = cartTotal - discount;
+     clickedButton.style.display="none";
+  }
+updateOrderTotal();
+    // Change the clicked button to a "Remove Coupon" button
+    updateButtonToRemoveCoupon(clickedButton,index);
+  }
+  else{
+	    const errorDisplay=document.querySelectorAll('.error')[index];
+		errorDisplay.innerHTML="Coupon is not Valid.Try another"
+  }
+}
+
+function closeModal() {
+	const successMessage = document.getElementById('Message');
+        const successModal = document.getElementById('successModal');
+		successModal.style.display = 'none';
+       if(successMessage.textContent==="OrderPlaced Successfully"){
+               window.location.href="/orders";
+		}
+		else if(successMessage.textContent==="Something went Wrong? Order not placedOrder"){
+        window.location.href="/checkout";
+    }
+		else if(successMessage.textContent==="Please choose address/add other Address"){
+			
+
+        window.location.href="/checkout";
+		}
+
+    }
+function updateButtonToRemoveCoupon(button,index) {
+	const applyButtons = document.querySelectorAll('.apply-btn');
+  applyButtons.forEach(applyButton => {
+    applyButton.disabled = true;
+  });
+
+
+
+  // Assuming you have a class 'remove-btn' for your remove button
+  const removeButton = document.querySelectorAll('.remove-btn')[index];
+  console.log(index)
+  removeButton.style.display = 'inline-block';
+
+  // Set the 'onclick' event for the remove button to a function that removes the applied coupon
+  removeButton.onclick = function() {
+	button.style.display= "inline-block"
+    removeCoupon(button,index);
+
+  };
+}
+
+function removeCoupon(appliedButton,index) {
+  // Implement logic to remove the applied coupon
+  // Enable all other buttons
+  const applyButtons = document.querySelectorAll('.apply-btn');
+  applyButtons.forEach(button => {
+    button.disabled = false;
+  });
+  const discountElement=document.getElementById('discount')
+  discountElement.textContent=""
+  updateOrderTotal();
+  // Change the "Remove Coupon" button back to an "Apply Coupon" button
+  const removeButton = document.querySelectorAll('.remove-btn')[index];
+  removeButton.style.display = 'none';
+
+  // Clear the onclick event for the remove button
+  removeButton.onclick = null;
+  
+  // Implement logic to update the cart total without the removed coupon
+}
+
+			 
+		  </script>
+		</body>
+		</html>
+
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script src="js/tiny-slider.js"></script>
+		<script src="js/custom.js"></script>
+	</body>
+
+</html>

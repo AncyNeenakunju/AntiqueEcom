@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+   <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+   <!-- style css -->
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/loginstyle.css">
+ <!---  <link rel="stylesheet" type="text/css" href="/css/otp.css">-->
+    <link rel="stylesheet" href="/css/responsive.css">
+   <!-- fevicon -->
+ 
+   <!-- Scrollbar Custom CSS -->
+   <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   
+   <link rel="stylesheet" href="/css/owl.carousel.min.css">
+   <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+   <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+   <!-- Add these links to your HTML -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+       <style>
+        input[type=text] {
+  background-color: #1A2226;
+  border: none;
+  border-bottom: 2px solid #0DB8DE;
+  border-top: 0px;
+  border-radius: 0px;
+  font-weight: bold;
+  outline: 0;
+  margin-bottom: 20px;
+  padding-left: 0px;
+  color: #ECF0F5;
+}
+       </style>
+  </head>
+   <header>
+      <!--header section start -->
+      <div class="header_section">
+         <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <div class="collapse navbar-collapse " id="navbarNav">
+            <div class=><a href="index.html"><img src="/images/logo.png"></a></div> 
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+               </button>
+              
+                  <ul class="navbar-nav  ml-auto"> 
+                     <li class="nav-item ">
+                        <a class="nav-link" href="/">Home</a>
+                     </li>
+                     <li class="nav-item ">
+                        <a class="nav-link" href="/productlists">Products</a>
+                     </li>
+                     <li class="nav-item ">
+                        <a class="nav-link" href="/Myorders?intent=orders">Orders</a>
+                     </li>
+                     <li class="nav-item ">
+                        <a class="nav-link" href="/cartPage?intent=cart"><i id="cartIcon" class="fa fa-shopping-cart">
+                        </i></a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/Whsihlist?intent=whishlist"><i class="fa fa-heart"></i></a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/myprofile?intent=myprofile"><i class="fa fa-user"></i></a>
+                     </li>
+                    
+                  </ul>
+               </div>
+            </nav>
+            
+         </div>
+      </div>
+   
+      </header> 
+      <body style="background-color: #252525;">
+        <div class="banner_section layout_padding mt-1">
+            <div class="container">
+               <div id="main_slider" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                     <div class="carousel-item active">
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <div class="banner_taital">
+                                 <h1 class="outstanding_text text-white">Outstanding</h1>
+                                 <h1 class="coffee_text text-white">Antique Shop</h1>
+                                 <p class="there_text text-white text-white">Welcome you to the wonderworld of antiques</p>
+                                 
+                              </div>
+                           </div>
+       
+                           <div class="col-sm-6">
+                            <div class="banner_taital">
+  
+            <div class="col-lg-12 login-title text-danger " style="font-size: 32px;">
+                OTP VERIFICATION
+                  </div>
+                  
+      
+          
+            <div class="col-lg-12 login-form">
+           <form>
+              <div class="form-group">
+           <label class="form-control-label">Check your email for OTP: Valid for 10min</label>
+           <input type="text" class="form-control mt-3 w-50" id="otpInput" placeholder="Enter OTP">
+          </div>
+            <div>
+                <button type="button" class="btn  m-5 " style="color:orange" onclick="verifyOTP()">Verify</button>
+            
+          <button class="btn" style="color:orange" onclick="resendOTP()" id="resend" >Resend</button></div>
+    
+        </div>
+    </div>
+    </div>
+    </div>    
+  </form>
+
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </body>
+
+  <div class="mt-5">
+    <%- include('../layouts/footer.ejs') %>
+</div>
+    <script>
+          
+      
+      function verifyOTP() {
+        
+            const enteredOTP = document.getElementById('otpInput').value;
+          
+            const token = '<%= token %>'; // Replace with the actual token
+            const createdotp=`<%=otp%>`;
+             console.log(enteredOTP)
+          console.log(createdotp)
+            // Make an AJAX request to the server for OTP verification
+        
+fetch(`/verify-otp/${token}`, {
+  method: 'post',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: `otp=${enteredOTP}&createdotp=${createdotp}`,
+})
+  .then(response => {
+    if (response.ok) {
+      // Assuming the server responds with JSON indicating success
+      return response.json();
+    } else {
+      throw new Error('Invalid OTP. Please try again.'); // This will be caught in the next catch block
+    }
+  })
+  .then(data => {
+    // Handle the response data
+    if (data.success) {
+      if (data.intent === "product") {
+        console.log(data)
+        window.location.href = `/productdetails?id=${data.id}`;
+      } else if (data.intent === "cart") {
+        window.location.href = "/cartPage";
+      } else if(data.intent === "orders"){
+        window.location.href = "/myOrder"
+      }else if(data.intent === "myprofile"){
+        window.location.href = "/profile"
+      }
+    else if(data.intent === "whishlist"){
+        window.location.href = "/whishlist"
+      }
+    } else {
+    /*  const resend=document.getElementById('resend')
+      console.log(resend) */
+      alert('Invalid OTP. Please try again.');
+      /*resend.style.display="block";*/
+
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error.message);
+    // Handle other errors here
+  });
+      }
+        function resendOTP() {
+            const token = '<%= token %>'; // Replace with the actual token
+
+            // Make an AJAX request to the server for OTP resend
+            fetch(`/resend-otp/${token}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("check your mail"); // Show the response message (you might want to handle this differently)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
+</body>

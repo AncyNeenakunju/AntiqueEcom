@@ -1,0 +1,112 @@
+
+<style>
+.refer h1 {
+  margin: 0;
+}
+
+.refer .back-button {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.refer .referral-history-link {
+  font-size: 16px;
+  color: orange;
+  text-decoration: none;
+  float:right;
+}
+
+.refer .content-container {
+  text-align: center;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.refer .button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #0e0f10;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+}
+</style>
+<%- include('../layouts/head.ejs') %>
+<%- include('../users/side.ejs') %>
+ 
+<div class="col-sm-6 refer">
+   <div class="banner_taital ">
+    <span class="back-button" onclick="goBack()">←Backtoprofile</span>
+   
+  <div class="content-container">
+    <h2>Your Referral Code</h2>
+    <p id="referralCode"><%=referalCode%></p>
+    <button onclick="shareViaEmail()" class="button">Share via Email</button>
+    <button onclick="shareViaWhatsApp()" class="button">Share via WhatsApp</button>
+  </div>
+</div>
+</div>
+</div>
+</body>
+
+
+
+
+
+
+
+  
+
+
+  <script>
+    // Replace 'http://localhost:3000' with the actual URL of your backend server
+    
+
+    // Fetch the referral code from the backend
+    fetch(`/referral-code`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        // Add any other headers if needed
+      },
+      // Include credentials if you are using cookies for authentication
+      credentials: 'include',
+    })
+    .then(response => response.json())
+    .then(data => {
+      const referralCodeElement = document.getElementById('referralCode');
+      referralCodeElement.textContent = `Your referral code is: ${data.referralCode}`;
+    })
+    .catch(error => {
+      console.error('Error fetching referral code', error);
+    });
+
+    // Function to share via email
+    function shareViaEmail() {
+      const referralCode = document.getElementById('referralCode').textContent;
+      const signupLink = `antique.com/register?ref=${referralCode}`;
+      const subject = encodeURIComponent('Check out my referral code!');
+      const body = encodeURIComponent(`Hey! Sign up using my referral code: ${signupLink}`);
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    }
+
+    // Function to share via WhatsApp
+    function shareViaWhatsApp() {
+      const referralCode = document.getElementById('referralCode').textContent;
+      const signupLink = `antique.com/register?ref=${referralCode}`;
+      const message = encodeURIComponent(`Hey! Sign up using my referral code: ${signupLink}`);
+      window.location.href = `https://wa.me/?text=${message}`;
+    }
+
+
+    function goBack() {
+      // You can customize this based on your application's navigation logic
+      window.history.back();
+    }
+  </script>
+</body>
+</html>

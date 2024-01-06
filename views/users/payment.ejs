@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Failed Order - Payment Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-summary {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .payment-options {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .payment-option {
+            width: 30%;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .payment-option:hover {
+            background-color: #e1f5fe;
+        }
+
+        #payment-message {
+            margin-top: 20px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Failed Order - Payment Page</h2>
+
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <!-- Display order details here -->
+            <p>Product: Sample Product</p>
+            <p>Quantity: 1</p>
+            <p>Total Amount: $10.00</p>
+        </div>
+
+        <p>Choose a different payment option:</p>
+
+        <div class="payment-options">
+            <div class="payment-option" onclick="selectPayment('credit_card')">Credit Card</div>
+            <div class="payment-option" onclick="selectPayment('paypal')">PayPal</div>
+            <div class="payment-option" onclick="selectPayment('bank_transfer')">Bank Transfer</div>
+        </div>
+
+        <div id="payment-message"></div>
+
+        <button onclick="retryPayment()">Retry Payment</button>
+    </div>
+
+    <script>
+        let selectedPayment = '';
+
+        function selectPayment(paymentMethod) {
+            selectedPayment = paymentMethod;
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.style.backgroundColor = option.innerText.toLowerCase() === paymentMethod ? '#81c784' : '';
+            });
+        }
+
+        function retryPayment() {
+            if (selectedPayment) {
+                document.getElementById('payment-message').innerText = `Retry payment using ${selectedPayment}.`;
+            } else {
+                alert('Please select a payment option.');
+            }
+        }
+    </script>
+</body>
+</html>

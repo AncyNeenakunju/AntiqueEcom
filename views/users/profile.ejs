@@ -1,0 +1,292 @@
+<%- include('../layouts/head.ejs') %>
+<style>
+  /* Add your styles here */
+  .card-link-box {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 20px;
+  }
+
+  .card-link {
+      flex: 0 0 calc(50% - 10px);
+      margin-bottom: 20px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      text-align: center;
+      text-decoration: none;
+      color: #333;
+      transition: background-color 0.3s ease;
+  }
+
+  .card-link:hover {
+      background-color: #f8f9fa;
+  }
+  .edit-form {
+            display: none;
+        }
+  .overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Style for the modal box */
+.custom-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px; /* Adjust the width as needed */
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.close {
+  cursor: pointer;
+}
+
+</style>
+<script>
+  // Add your JavaScript here
+  function toggleEdit() {
+      var cardBody = document.getElementById('card-body');
+      var editForm = document.getElementById('edit-form');
+      var addressBody = document.getElementById('addresses-section');
+      if (cardBody.style.display === 'none') {
+          cardBody.style.display = 'block';
+          editForm.style.display = 'none';
+          addressBody.style.display='none'
+      } else {
+          cardBody.style.display = 'none';
+          editForm.style.display = 'block';
+          addressBody.style.display='none'
+      }
+  }
+   // Add your JavaScript here
+   function toggleEditForm() {
+      var cardBody = document.getElementById('addresses-section');
+      var editForm = document.getElementById('edit-addresses-form');
+
+      if (cardBody.style.display === 'none') {
+          cardBody.style.display = 'block';
+          editForm.style.display = 'none';
+      } else {
+          cardBody.style.display = 'none';
+          editForm.style.display = 'block';
+      }
+  }
+  function toggleAddressEdit() {
+        var cardBody = document.getElementById('card-body');
+      var Address = document.getElementById('addresses-section');
+      var editForm = document.getElementById('edit-addresses-form');
+
+      if (cardBody.style.display ==='block') {
+          Address.style.display  ='block';
+          cardBody.style.display = 'none';
+      } else {
+          cardBody.style.display = 'block';
+          Address.style.display ='none'
+      }
+  }
+
+  function closeModal() {
+        const successModal = document.getElementById('successModal');
+        successModal.style.display = 'none';
+        window.location.reload();
+    }
+   
+
+
+  function saveAddressChanges() {
+            // Get input values
+            var hno = document.getElementById('hno').value;
+            var place = document.getElementById('place').value;
+            var post= document.getElementById('post').value;
+            var district= document.getElementById('district').value;
+            var state= document.getElementById('state').value;
+            var country= document.getElementById('country').value;
+            var postal= document.getElementById('postal').value;
+            // Make sure to replace 'your-api-endpoint' with the actual API endpoint
+         var data = {
+            houseNo:hno,
+            place:place,
+            postOffice:post,
+            District:district,
+            State:state,
+            Country:country,
+            postalCode:postal  
+        
+             };
+
+            // Make the POST request
+            fetch('/updateAddress', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any other headers if needed
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                // Handle the response from the server
+                console.log('Update successful', result);
+                const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="EditedSucessfully";
+                successMessage.style.color="green"
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error updating user details', error);
+            });
+        }
+        function saveChanges() {
+            // Get input values
+            var newEmail = document.getElementById('email').value;
+            var newMobile = document.getElementById('mobile').value;
+           
+            // Make sure to replace 'your-api-endpoint' with the actual API endpoint
+            var apiUrl = '/updateUser';
+
+            // Prepare data for the POST request
+            var data = {
+                email: newEmail,
+                mobile: newMobile
+                // Add more fields if needed
+            };
+
+            // Make the POST request
+            fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any other headers if needed
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                // Handle the response from the server
+                console.log('Update successful', result);
+                const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="EditedSucessfully";
+                successMessage.style.color="green"
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error updating user details', error);
+            });
+        }
+</script>
+<section class="h-100 gradient-custom  bg-white">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100 mt-5">
+      <div class="col-lg-10 col-xl-8">
+        <div class="card m-5" style="border-radius: 10px;">
+          <div class="card-header px-4 py-5 " style="background-color: black;">
+            <h3 class="text-muted mb-0">
+              Welcome, <span style="color: white;"><%= user.firstname %> <%=user.lastname %></span>!
+          </h3>
+          <p class="text-muted mb-0">
+            Email: <span style="color: white;"><%=user.email%></span>
+            &nbsp;|&nbsp; <!-- Add space between email and mobile -->
+            Mobile: <span style="color: white;"><%=user.mobile%></span>
+            &nbsp;|&nbsp; <!-- Add space between mobile and edit link -->
+            <a href="javascript:void(0);" onclick="toggleEdit()" style="color: #a8729a;">Edit Profile</a>
+        </p>
+          </div>
+          <div class="card-body p-4" id="card-body">
+            <div class="card-link-box">
+              <a href="/myOrder?intent=orders" class="card-link bg-dark text-white">My Orders</a>
+              <a href="javascript:void(0);" onclick="toggleAddressEdit()" class="card-link bg-dark text-white">Addresses</a>
+
+          </div>
+          <!-- Links to Referrals and Wallet in another row -->
+          <div class="card-link-box">
+              <a href="/referandEarns" class="card-link  bg-dark text-white">Referrals</a>
+              <a href="/wallet" class="card-link bg-dark text-white">Wallet</a>
+          </div>
+           </div>
+           <div class="edit-form p-4" id="edit-form">
+               <div class="row">
+              <div class="col-6">
+            <input type="text" class="form-control bg-white text-dark" placeholder="Edit Email" id="email"></div>
+            <div class="col-6">
+              <input type="text" class="form-control bg-white text-dark" placeholder="Edit Mobile" id="mobile"></div>
+               <button class="btn btn-dark" onclick="saveChanges()">Save Changes</button>
+            <button class="btn btn-secondary" onclick="toggleEdit()">Close</button>
+      </div>
+      </div>
+      <div class="edit-form p-4" id="edit-addresses-form">
+         
+           <div class="row">
+            <div class="col-6"><input type="text" class="form-control bg-white text-dark" placeholder="houseNo" id="hno"></div>
+          <div class="col-6"> <input type="text" class="form-control bg-white text-dark" placeholder="place" id="place"></div>
+          </div>
+          <div class="row">
+            <div class="col-6"><input type="text" class="form-control bg-white text-dark" placeholder="postOffice" id="post"></div>
+          <div class="col-6"> <input type="text" class="form-control bg-white text-dark" placeholder="District" id="district"></div>
+          </div>
+          <div class="row">
+            <div class="col-6"> <input type="text" class="form-control bg-white text-dark" placeholder="State" id="state"></div>
+          <div class="col-6"> <input type="text" class="form-control bg-white text-dark" placeholder="Country" id="country"></div>
+          </div>
+          <div class="row">
+            <div class="col-6"><input type="text" class="form-control bg-white text-dark ml-5" placeholder="postalCode" id="postal"></div>
+          </div>
+          <button class="btn btn-dark" onclick="saveAddressChanges()">Save</button>
+          <button class="btn btn-secondary" onclick="toggleEditForm()">Close</button>
+      </div>
+    
+  
+<div id="addresses-section" style="display: none">
+  <% if( user.address.length>0) {%>
+   <p>Saved Address:
+      <p><%= user.address[0].name %>
+    <%= user.address[0].houseNo %>
+    <%= user.address[0].place %>
+    <%= user.address[0].postOffice %>
+    <%= user.address[0].District %>
+    <%= user.address[0].Country %>
+    <%= user.address[0].postalCode %></p>
+     <% }%>
+  <button class="btn btn-dark text-dark" style="text-decoration: none; border-bottom: 1px solid #000; background-color: transparent; border: none; cursor: pointer;" onclick="toggleEditForm()">Edit Address</button>
+    <button class="btn btn-dark text-dark" style="text-decoration: none; border-bottom: 1px solid #000; background-color: transparent; border: none; cursor: pointer;" onclick="window.location.href='/profile'">BacktoProfile</button>
+</div>
+    
+             
+
+      </section>
+      <div class="mt-5">
+        <%- include('../layouts/footer.ejs') %>
+      </div>
+
+      <div class="overlay" id="overlay" onclick="closeModal()"></div>
+                  <div id="successModal" class="custom-modal">
+                    <div class="modal-content">
+                        <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+                     <p id="Message"></p>
+                      <span class="close" onclick="closeModal()">ok</span>
+                     
+                    </div>
+                  </div>
+              </div>

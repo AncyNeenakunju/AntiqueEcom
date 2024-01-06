@@ -1,0 +1,228 @@
+<!-- tryAgain.ejs -->
+
+<%- include('../layouts/header.ejs') %>
+<style>
+
+
+			/* Style for the overlay background */
+			.overlay {
+			  display: none;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  width: 100%;
+			  height: 100%;
+			  background: rgba(0, 0, 0, 0.5);
+			  z-index: 1;
+			}
+			
+			/* Style for the modal box */
+			.custom-modal {
+			  display: none;
+			  position: fixed;
+			  top: 50%;
+			  left: 50%;
+			  transform: translate(-50%, -50%);
+			  width: 300px; /* Adjust the width as needed */
+			  background-color: #fff;
+			  padding: 20px;
+			  border: 1px solid #ddd;
+			  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			  z-index: 2;
+			}
+			
+			.modal-content {
+			  text-align: center;
+			}
+			
+			.close {
+			  cursor: pointer;
+			}
+			
+			  
+		
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    
+    }
+
+    .order-summary {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        text-align: left; /* Align text to the left */
+    }
+
+    .order-summary h3 {
+        margin-left: auto; /* Move to the right */
+    }
+
+    .order-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .payment-options {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .payment-option {
+        width: 30%;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .payment-option:hover {
+        background-color: #e1f5fe;
+    }
+
+    #payment-message {
+        margin-top: 20px;
+        color: red;
+        font-weight: bold;
+    }
+</style>
+
+    <div class="container mt-5 ">
+        <h2 class="text-danger">Payment Failed</h2>
+
+        <div class="order-summary mt-5">
+            <div class="order-details">
+                <!-- Display order details here -->
+                <p>OrderId: <%= order._id %></p>
+                <p>Total Amount: <%= order.totalAmount %></p>
+            </div>
+
+            <h3>Order Summary</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <!-- Add table header columns if needed -->
+                        <th>Product</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i = 0; i < order.orderItems.length; i++) { %>
+                        <tr>
+                            <!-- Assuming orderItems is an array of objects with 'product' and 'quantity' properties -->
+                            <td><%= order.orderItems[i].productId.name %></td>
+                            <td><%= order.orderItems[i].quantity %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <p></p>
+
+        <div class="payment-options">
+            <button class="payment-option bg-dark text-white" onclick="updatepaymentStatus('<%= order._id %>', 'COD')">Choose Cash on Delivery</button>
+        </div>
+        <div id="payment-message"></div>
+
+    </div>
+
+
+    <div class="overlay" id="overlay" onclick="closeModal()"></div>
+							<div id="successModal" class="custom-modal">
+							  <div class="modal-content">
+								  <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+							   <p id="Message"></p>
+								<span class="close" onclick="closeModal()">ok</span>
+							   
+							  </div>
+						
+		            
+
+	
+
+</body>
+
+<!-- Add this script after your existing JavaScript code -->
+
+<script>
+ 
+    
+function updatepaymentStatus(orderId, status) {
+    fetch(`/updatepaymentStatus/${orderId}`, {
+        method: 'POST', // Use the appropriate HTTP method for updating data
+        headers: {
+            'Content-Type': 'application/json',
+            // Add any other necessary headers
+        },
+        body: JSON.stringify({ status }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success){
+			const successModal = document.getElementById('successModal');
+        const successMessage = document.getElementById('Message');
+        successModal.style.display = 'block';
+        successMessage.innerHTML = "Order Placed Successfully";
+        successMessage.style.color = "green";
+		}
+		else{
+			const successModal  = document.getElementById('successModal ');
+        const successMessage = document.getElementById('Message');
+		successModal.style.display = 'block';
+        successModal.innerHTML = `Payment failed`;
+		successModal.style.color = "red";
+		}
+    })
+    .catch(error => {
+        console.error("Error updating order status:", error);
+        // Handle the error updating order status
+    });
+}
+
+function closeModal() {
+	const successMessage = document.getElementById('Message');
+        const successModal = document.getElementById('successModal');
+		successModal.style.display = 'none';
+        window.location.href="/orders";
+        }
+</script>
+
+</html>

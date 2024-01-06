@@ -1,0 +1,223 @@
+<%- include('../layouts/adminhead.ejs') %>
+
+<style>
+
+/* Style for the overlay background */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Style for the modal box */
+.custom-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px; /* Adjust the width as needed */
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.close {
+  cursor: pointer;
+}
+
+
+    /* Add your CSS styles here for formatting */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    .order-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    h2 {
+        color: #333;
+    }
+    .order-info {
+        margin-bottom: 20px;
+    }
+    .product-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th, td {
+    border: none;
+    padding: 8px;
+    text-align: left;
+  }
+
+</style>
+
+
+            <div class="order-card">
+                <h2> Order Detail</h2>
+                <div class="order-info">
+                <table>
+                  <thead>
+                    <tr>
+                    <th>Order ID:</th>
+                    <th>Username:</th>
+                    <th>Shipping Address:</th>
+                    <th>TotalAmount</th>
+                    </tr>
+                  </thead>
+            
+                <!-- Order Information Section -->
+             <tbody>
+                    <td><%= order._id %></td>
+                    <td><%= order.userId.firstname + ' ' + order.userId.lastname %></td>
+                   <td><table>
+                      <thead></thead>
+                      <tbody>
+                        <tr>
+                    <td><%=order.userId.address[0].houseNo %></td></tr>
+                    <tr><td> <%= order.userId.address[0].place %></td></tr>
+                    <tr><td><%= order.userId.address[0].City %></td></tr>
+                    </tbody>
+                 </table></td>
+                 <td><%= order.totalAmount %></p></td>
+                    </tbody>
+                  </table>
+                </div>
+        </div>
+  
+  
+    
+    <div class=" tm-block-col">
+        <div class="tm-bg-primary-dark tm-block">
+            <h2 class="tm-block-title">Ordered Products</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="order-date">ProductId</th>
+                        <th class="order-id">Product Name</th>
+                        <th class="item-name">Quantity</th>
+                        <th class="total-amount">Amount</th>
+                        <th class="status">Status</th>
+                        <th class="order-actions">Actions</th>
+                    </tr>
+                </thead>
+               
+                <tbody>
+                    <% for (let i = 0; i < order.orderItems.length; i++) { %>
+                    <tr>
+                        <td class="min-width"> <%= order.orderItems[i].productId._id %></td>
+                        <td class="min-width"><%= order.orderItems[i].productId.name %></td>
+                        <td class="min-width">    
+                            <p><%= order.orderItems[i].quantity %></p></td>
+                            <% if(!order.orderItems[i].price) {%>
+                            <td class="min-width" style=" color: #fff;"><%= order.orderItems[i].productId.price %></td>
+                            <%} else{%>
+                                <td class="min-width" style="color: #fff;"><%= order.orderItems[i].price %></td>
+                                <%}%>
+                           <td class="min-width" style="background-color:<% if (order.orderItems[i].Orderstatus === 'Pending') { %> #5cb85c; color: #fff; <% } else if (order.orderItems[i].Orderstatus === 'Cancelled') { %> #d9534f; color: #fff; <% } else { %> #0088cc; color: #fff; <% } %>;"><%= order.orderItems[i].Orderstatus %></td>
+                        
+                      
+                        <td class="min-width">
+                            <div class="row">
+                              <div class="col-md-6 mb-2">
+                                <select class="form-control" id="orderStatusSelect">
+                                  <option value="Pending">Pending</option>
+                                  <option value="Shipped">Shipped</option>
+                                  <option value="Delivered">Delivered</option>
+                                  <!-- Add more status options as needed -->
+                                </select>
+                              </div>
+                              <div class="col-md-6">
+                                <button class="btn btn-primary" onclick="changeOrderStatus('<%=order.orderItems[i]._id%>','<%=order._id%>', $('#orderStatusSelect').val())" style="border-radius:10px">
+                                  Change Status
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                    </tr>
+                    <% } %>
+                             
+                
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+    
+   </div>
+    <div class="overlay" id="overlay" onclick="closeModal()"></div>
+    <div id="successModal" class="custom-modal">
+      <div class="modal-content">
+          <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+       <p id="Message"></p>
+        <span class="close" onclick="closeModal()">ok</span>
+       
+      </div>
+    </div>
+  </div>        
+
+<!-- Ordered Products Section -->
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>   
+
+function changeOrderStatus(orderItemId, orderId, newStatus) {
+    // Make an AJAX request to your server to update the order status
+    $.ajax({
+      url: "/admin/changeOrderStatus", // Replace with the actual URL endpoint for changing order status
+      method: "POST",
+      data: { orderItemId:orderItemId,orderId: orderId, newStatus: newStatus },
+      success: function (response) {
+          const successModal = document.getElementById('successModal');
+              const successMessage = document.getElementById('Message');
+              successModal.style.display = 'block';
+              successMessage.innerHTML="OrderStatus changed Successfully";
+              successMessage.style.color="green"
+      },
+      error: function (error) {
+          const successModal = document.getElementById('successModal');
+              const successMessage = document.getElementById('Message');
+              successModal.style.display = 'block';
+              successMessage.innerHTML="Status update failed";
+              successMessage.style.color="green"
+      }
+    });
+  }
+
+  function closeModal() {
+      const successModal = document.getElementById('successModal');
+      successModal.style.display = 'none';
+      window.location.reload();
+  }
+
+</script>
+</html>

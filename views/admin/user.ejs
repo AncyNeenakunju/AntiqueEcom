@@ -1,0 +1,251 @@
+<%- include('../layouts/adminhead.ejs', { currentPage: 'customer' }) %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script defer src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<script>
+  $(document).ready(function(){
+    $('#example').DataTable();
+  });
+</script>
+<style>
+  /* Style for the overlay background */
+  .overlay,.overlay2 {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  /* Style for the modal box */
+  .custom-modal,.custom-modal1 {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px; /* Adjust the width as needed */
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+  }
+  
+  .modal-content,.modal-content1 {
+    text-align: center;
+  }
+  
+  .close {
+    cursor: pointer;
+  }
+  
+    
+  </style>
+  <div class=" mt-5">
+    <div class="row tm-content-row">
+      <div class="col-sm-12 col-md-12 col-lg-8 col-xl-12 tm-block-col">
+        <div class="tm-bg-primary-dark tm-block tm-block-products">
+          <div class="tm-product-table-container">
+  <h1>Customers</h1>
+  <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+          <tr class="">
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Contact Number</th>
+            <th scope="col">email</th>
+           
+            <th scope="col">Status</th>
+            <th scope="col">Role</th>
+            <th scope="col" class="justify-center">Actions</th>
+            
+            
+          </tr>
+        </thead>
+        <tbody>
+          <% if(users.length>0) { %>
+          <% for(let i=0;i<users.length;i++) { %>
+            <% if(users[i].status!=="Active") { %>
+            <tr class="category-row" id="productrow" style="background-color: red;">
+              <%} else {%>
+                <tr class="category-row" id="productrow" style="background-color:'' "> 
+                  <%}%>
+            <th scope="row"><%=i%></th>
+            <td><%=users[i].firstname %> <%=users[i].lastname%> </td>
+            <td><%=users[i].mobile%> </td>
+            <td><%=users[i].email%></td>
+            <td ><%=users[i].status%></td>
+            <td ><%=users[i].Role%></td>
+            <td class="d-flex">
+              <button  class="btn btn-primary btn-block text-uppercase blockbutton rounded" id="blockbutton" data-itemid="<%=users[i]._id%>" <% if((users[i].status)==="Active") { %>style="display: block; " <%}else{%>style="display:none;" <%}%> >
+              block</button>
+                <button  class="btn btn-primary btn-block text-uppercase unblockbutton rounded" id="blockbutton" data-itemid="<%=users[i]._id%>" <% if((users[i].status)==="Active") { %>style="display: none; " <%}else{%>style="display:block;" <%}%> >
+                 unblock</button>
+            
+            <a href="/admin/changeRole-user?id=<%=users[i]._id%>"  class="btn btn-primary btn-block text-uppercase mx-5 rounded">ChangeRole</a>
+             
+            </td>
+          <% } %>
+          
+         <% }else{ %>
+          <td colspan="5">user not found</td>
+       <%  } %>
+         
+        </tr>
+        </tbody>
+      </table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="overlay2" id="overlay2"></div>
+
+              <div id="successModal1" class="custom-modal1">
+                <div class="modal-content1">
+                  <p id="Message1"></p>
+                  <div class="modal-buttons">
+                    <button class="confirm-button" id="confirmButton">Confirm</button>
+                    <button class="cancel-button" id="cancelButton">Cancel</button>
+                  </div>
+                </div>
+              </div>
+<script>
+        
+  document.addEventListener('DOMContentLoaded', function () {
+    console.log(1)
+  const blockElements = document.querySelectorAll('.blockbutton');
+  const unblockElements = document.querySelectorAll('.unblockbutton');
+  const rows = document.querySelectorAll('.category-row');
+  
+  
+  blockElements.forEach((blockElement, index) => {
+    blockElement.addEventListener('click', function () {
+      const itemid = this.dataset.itemid;
+      const unblockElement = unblockElements[index];
+        const row=rows[index]
+      blockUser(itemid, blockElement, unblockElement,row);
+    });
+  });
+});
+
+
+    
+function  blockUser(ItemId,blockElement,unblockElement,row)
+{
+  const overlay = document.getElementById('overlay2')
+  const successModal = document.getElementById('successModal1');
+  const successMessage = document.getElementById('Message1');
+
+  // Display your custom modal
+  overlay.style.display = 'block';
+  successModal.style.display = 'block';
+  successMessage.innerHTML = 'Are you sure you want to block user?';
+
+  // Add event listeners to handle user interaction
+  const confirmButton = document.getElementById('confirmButton');
+  const cancelButton = document.getElementById('cancelButton');
+
+  confirmButton.addEventListener('click', function () {
+    fetch(`/admin/block-user?id=${ItemId}`, {
+      method: 'post',
+    })
+      .then(response => {
+        if (response.ok) {
+         
+          // Loop through each button and update its style
+        
+            blockElement.style.display = 'none';
+            unblockElement.style.display = 'block';
+            row.style.backgroundColor = 'red'; // Reset the background color
+          console.log('Item deleted successfully.');
+         } else {
+          // Handle errors
+          console.error('Error deleting item.');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+      overlay.style.display = 'none';
+    successModal.style.display = 'none';
+  });
+
+  cancelButton.addEventListener('click', function () {
+    // User canceled the delete action, hide the custom modal and overlay
+    overlay.style.display = 'none';
+    successModal.style.display = 'none';
+  });
+}
+document.addEventListener('DOMContentLoaded', function () {
+    console.log(1)
+  const blockElements = document.querySelectorAll('.blockbutton');
+  const unblockElements = document.querySelectorAll('.unblockbutton');
+  const rows = document.querySelectorAll('.category-row');
+  
+  
+  unblockElements.forEach((unblockElement, index) => {
+    unblockElement.addEventListener('click', function () {
+      const itemid = this.dataset.itemid;
+      const blockElement = blockElements[index];
+        const row=rows[index]
+      unblockUser(itemid, blockElement, unblockElement,row);
+    });
+  });
+});
+
+
+    
+function unblockUser(ItemId,blockElement,unblockElement,row)
+{
+  const overlay = document.getElementById('overlay2')
+  const successModal = document.getElementById('successModal1');
+  const successMessage = document.getElementById('Message1');
+
+  // Display your custom modal
+  overlay.style.display = 'block';
+  successModal.style.display = 'block';
+  successMessage.innerHTML = 'Are you sure you want to unblock user?';
+
+  // Add event listeners to handle user interaction
+  const confirmButton = document.getElementById('confirmButton');
+  const cancelButton = document.getElementById('cancelButton');
+
+  confirmButton.addEventListener('click', function () {
+    fetch(`/admin/unblock-user?id=${ItemId}`, {
+      method: 'post',
+    })
+      .then(response => {
+        if (response.ok) {
+         
+          // Loop through each button and update its style
+        
+            blockElement.style.display = 'block';
+            unblockElement.style.display = 'none';
+            row.style.backgroundColor = ''; // Reset the background color
+          console.log('Item deleted successfully.');
+         } else {
+          // Handle errors
+          console.error('Error deleting item.');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+      overlay.style.display = 'none';
+    successModal.style.display = 'none';
+  });
+
+  cancelButton.addEventListener('click', function () {
+    // User canceled the delete action, hide the custom modal and overlay
+    overlay.style.display = 'none';
+    successModal.style.display = 'none';
+  });
+}
+</script>

@@ -1,0 +1,50 @@
+<%- include('../layouts/adminhead.ejs', { currentPage: 'category' }) %>
+        <div class="container tm-mt-big tm-mb-big">
+          <div class="row">
+            <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+              <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+                <div class="row">
+                  <div class="col-12">
+                    <h2 class="tm-block-title d-inline-block">Add Category</h2>
+                  </div>
+                </div>
+                <div class="row tm-edit-product-row">
+                  <div class="col-xl-6 col-lg-6 col-md-12">
+           <form action="/admin/addcategory" class="tm-edit-product-form"  method="post">
+           <label  style="font-size:16px" class="text-white">Enter a category:</label>
+           <input type="text" id="categoryName" name="categoryName" class="rounded-textbox w-100  form-control validate" required>
+           <input type="submit" value="Add category" class=" mt-5 w-100 rounded-textbox btn btn-primary btn-block text-uppercase mb-3" style="color:rgb(28, 19, 19)">
+
+           <% if (typeof message !=="undefined"){ %>
+            <label class="form-check-label" for="exampleCheck1"  style="color:white" ><%=message%></label>
+           <%}%>
+
+</form>
+
+
+<hr class="bg-white">
+      <h1 class="text-white m-3 pt-0  tm-block-title d-inline-block">Add SubCategory </h1>
+       <form action="http://localhost:3000/api/v1/admin/subcategory" method="post">
+        
+          <% if(category!=="undefined") {%> 
+           
+        <select id="categoryName" name="categoryName" style="color:white" required class=" mt-5 w-100 custom-select tm-select-accounts">
+             <option>choose a category</option>
+        <% for(i=0;i<category.length;i++) {%>
+    
+              <option value="<%=category[i].categoryname%>" style="color:red"><%=category[i].categoryname%></option>
+       <% } %>
+          
+   <% }else {  %>
+    <option value="" style="color:red">No category in Database Add Category first</option>
+    <%}%>
+          </select>
+    <label for="subcategoryName"  class="mt-5 text-white">Subcategory Name:</label>
+          <input type="text" id="subcategoryName" name="subcategoryName" required class="rounded-textbox w-100 form-control validate"">
+          
+          <input type="submit" value="Add Subcategory" class="rounded-textbox w-100 mt-5 btn btn-primary btn-block text-uppercase mb-3">
+      </form>
+    </div>
+  </body>
+  </html>
+  

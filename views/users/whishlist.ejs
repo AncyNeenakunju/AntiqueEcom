@@ -1,0 +1,176 @@
+<%- include('../layouts/header.ejs') %>
+<style>
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Style for the modal box */
+.custom-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px; /* Adjust the width as needed */
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.close {
+  cursor: pointer;
+}
+
+  
+</style>
+<body class="bg-white">
+  <div class="hero">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-lg-5" style="margin-top:200px">
+							<div class="intro-excerpt">
+								<h1>Wishlist</h1>
+							</div>
+						</div>
+						<div class="col-lg-7">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		<!-- End Hero Section -->
+
+		
+
+		<div class="untree_co-section before-footer-section">
+            <div class="container">
+              <div class="row mb-5">
+                <form class="col-md-12" method="post">
+                  <div class="site-blocks-table">
+                    <table class="table">
+                      <thead>
+                       
+                        <tr>
+                          <th class="product-thumbnail">Image</th>
+                          <th class="product-name">Product</th>
+                          <th class="product-price">Price(in Rs)</th>
+                         
+                        </tr>
+                      </thead>
+                      <tbody>
+                  
+                        <% for(i=0;i<wishlist.length;i++) {%>
+                         
+                            <tr data-productId="<%=wishlist[i].productData._id %>" data-offerId="<%=wishlist[i].productData.offer %>" class="productDetail" >
+                             
+                              <td class="product-thumbnail w-25">
+                            <img src="/uploads/<%=wishlist[i].productData.images[0].filename%>" alt="Image" class="img-fluid " style="width:15%;height:15%">
+                          </td>
+                          <td class="product-name">
+                            <h2 class="h5 text-black"><%=wishlist[i].productData.name%></h2>
+                          </td>
+                          <td class="price"><%=wishlist[i].productData.price%></td>
+                         
+                         
+                          <td><button class="addCart" style="background-color: black;color:white" data-userId="<%= userId %>" data-productId="<%= wishlist[i].productData._id %>">Add to Cart</button></td>
+                        </tr>
+                      <%} %>
+                       
+                      </tbody>
+                    </table>
+                  </div>
+                </form>
+              </div>
+        </div>
+          <div style="margin-top:200px">
+          <%- include('../layouts/footer.ejs') %>
+	</div>
+
+  <div class="overlay" id="overlay" onclick="closeModal()"></div>
+                  <div id="successModal" class="custom-modal">
+                    <div class="modal-content">
+                        <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+                     <p id="Message"></p>
+                      <span class="close" onclick="closeModal()">ok</span>
+                     
+                    </div>
+                  </div>
+              </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+  // Wait for the document to be fully loaded
+
+  // Find all elements with the class 'addCart'
+  var addCartButtons = document.querySelectorAll('.addCart');
+
+  // Attach a click event listener to each button
+  addCartButtons.forEach(function (button) {
+   
+    button.addEventListener('click', function () {
+        event.preventDefault();
+      var productId = button.getAttribute('data-productId');
+      var userId = button.getAttribute('data-userId');
+	  	fetch(`/add-to-cart?id=${productId}`, {
+		  method: 'post',
+		  headers: {
+			'Content-Type': 'application/json',
+		  }
+	})
+		.then(response => {
+			console.log(response)
+			return response.json()})
+		.then(data => {
+			console.log(data)
+			if(data.cartData){
+			const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="Added to cart Successfully";
+                successMessage.style.color="green"
+			}
+			else{
+				const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML=data.message;
+                successMessage.style.color="green"
+			}
+		
+		})
+		.catch(error =>{
+		const successModal = document.getElementById('successModal');
+                const successMessage = document.getElementById('Message');
+                successModal.style.display = 'block';
+                successMessage.innerHTML="InternalServerError";
+                successMessage.style.color="red";
+    })
+    });
+	  
+  });
+});
+
+function closeModal() {
+    const successModal = document.getElementById('successModal');
+	const successMessage = document.getElementById('Message');
+    successModal.style.display = 'none';
+      if(successMessage.textContent==="Added to cart Successfully")
+	  {
+        window.location.href="/cartPage";
+	  }
+	  
+    }
+  </script>
+		

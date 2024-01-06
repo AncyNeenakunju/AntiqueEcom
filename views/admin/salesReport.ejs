@@ -1,0 +1,295 @@
+<%- include('../layouts/adminhead.ejs', { currentPage: 'dashboard' }) %>
+
+<style>
+    .btn {
+        background-color: rgb(40, 167, 69); /* Green color */
+        color: #ffffff;
+    }
+
+    .btn:hover {
+        background-color: rgb(19, 102, 47);
+        color: #ffffff;
+    }
+
+    .container {
+        overflow-x: hidden !important;
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    table th,
+    table td {
+        padding: 8px;
+        text-align: left;
+    }
+
+    table thead tr {
+        background-color: #cac9c9;
+    }
+
+    .salesReport p {
+        margin: 10px 0;
+    }
+</style>
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script defer src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<script>
+  $(document).ready(function(){
+    $('#example').DataTable();
+  });
+</script>
+<section class="container">
+<h3 class="mb-0 pb-8 text-center fs-3 h3-color ">Sales Report</h3>
+
+<div class="row justify-content-end">
+<div class="col-md-3 mt-4">
+    <button id="generatePDFButton" class="btn btn-block btn-success">Generate PDF</button>
+</div>
+</div>
+
+<div class="row justify-content-end">
+<div class="col-md-3 mt-4">
+    <button id="generteXlButton" class="btn btn-block btn-success">Generate XL</button>
+</div>
+</div>
+
+<form id="dateRangeForm" class="row">
+<div class="col-md-3">
+    <div class="form-group">
+        <label for="startDate" class="text-primary">Start Date:</label>
+        <input type="date" class="form-control" id="startDate" name="startDate" style="width: 200px;" required>
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="form-group">
+        <label for="endDate"  class="text-primary">End Date:</label>
+        <input type="date" class="form-control" id="endDate" name="endDate" style="width: 200px;" required>
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="form-group">
+        <label for="statusFilter"  class="text-primary">Status:</label>
+        <select class="form-control" id="statusFilter" name="statusFilter" style="width: 200px;">
+            <option value="">All</option>
+            <option value="Pending">Pending</option>
+            <option value="COD">COD</option>
+            <option value="paid">paid</option>
+            <option value="failed">failed</option>
+            
+        </select>
+    </div>
+</div>
+<div class="col-md-3 mt-4">
+    <div class="form-group">
+        <button type="button" class="btn btn-block btn-primary" id="viewReportButton">View Report</button>
+    </div>
+</div>
+</form>
+<div id="errorContainer" class="error-container" style="color: red;"></div>
+
+<div id="salesReportResults" class="salesReport">
+    <table id="example" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>TotalProducts</th>
+                <th>Total Amount</th>
+                
+                <th>PaymentStatus</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <% if(order.length > 0) { 
+               for(let i=0; i < order.length; i++){ 
+            %>    
+
+            <% for (let j = 0; j < order[i].orderItems.length; j++) { %>
+
+            <tr>
+                <td><%= order[i].userId.firstname %> </td>
+                <td><%= order[i]._id %> </td>
+                <td><%= order[i].orderDate.toDateString() %> </td>
+                <td><%= order[i].orderItems.length%></td>
+                <td><%= order[i].totalAmount%> </td>
+                <td><%= order[i].paymentStatus %> </td>
+            </tr>
+            <% } %>
+            <% } } else { %>
+            <tr>
+                <td> No Orders </td>
+            </tr>
+
+            <% } %>
+        </tbody>
+    </table>
+</div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+integrity="sha384-pzjw8IT+KxEaG8I94AA0zIbjd+pPn+wc9gjI1lsg/5z5ZB+dOWFqX1a1kAdWEEDT"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+crossorigin="anonymous"></script>
+
+<!-- Include libraries for PDF and Excel generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+    // ...
+
+const viewReportButton = document.getElementById("viewReportButton");
+viewReportButton.addEventListener("click", () => {
+    // Get the selected start and end dates
+    const startDateInput = document.getElementById("startDate");
+    const endDateInput = document.getElementById("endDate");
+    const statusFilter = document.getElementById("statusFilter").value;
+
+    const startDate = startDateInput.value;
+    const endDate = endDateInput.value;
+
+    // Clear previous error messages
+    clearErrorMessages();
+
+    // if (!startDate) { 
+    //     displayErrorMessage("Please select a start date.");
+    //     return;
+    // }
+    // if (startDate && !endDate) { 
+    //     displayErrorMessage("Please select an end date.");
+    //     return;
+    // }
+
+    // Check if start date is before or equal to end date
+    if (new Date(startDate) > new Date(endDate)) {
+        displayErrorMessage("Give proper date");
+        return;
+    }
+
+    const data = JSON.stringify({ startDate, endDate, statusFilter });
+
+    fetch("/admin/getOrdersByDate", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: data,
+    })
+    .then(response => response.json())
+                .then((data) => {
+                    console.log("Data from the server:", data.result);
+                    displaySalesReport(data.result);
+                })
+                .catch((error) => {
+                    console.error("There was a problem with the fetch operation:", error);
+                });
+            });
+
+            function displayErrorMessage(message) {
+                const errorContainer = document.getElementById("errorContainer");
+                const errorMessage = document.createElement("p");
+                errorMessage.textContent = message;
+                errorContainer.appendChild(errorMessage);
+            }
+
+            function clearErrorMessages() {
+                const errorContainer = document.getElementById("errorContainer");
+                errorContainer.innerHTML = ""; // Clear previous error messages
+            }
+
+            // ...
+
+        function displaySalesReport(result) {
+            const salesReportResults = document.getElementById("salesReportResults");
+            salesReportResults.innerHTML = ""; // Clear previous results
+
+            if (result.length === 0) {
+                salesReportResults.innerHTML = "<p>No sales data available for the selected date range.</p>";
+            } else {
+                // Create an HTML table or any other format to display the data
+                const table = document.createElement("table");
+                table.className = "table table-bordered"; // You can apply Bootstrap styles
+                table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>TotalProducts</th>
+                <th>Total Amount</th>
+                
+                <th>PaymentStatus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${result.map((result) => `
+                       <tr>
+
+                            <td>${result.userId.firstname}</td>
+                            <td>${result._id}</td>                            
+                            <td>${formatDate(result.orderDate)}</td>  
+                            <td>${result.orderItems.length}</td>                         
+                            <td>${result.totalAmount}</td>
+                            <td>${result.paymentStatus}</td>                            
+                        </tr>`).join('')}
+                </tbody>
+            `;
+
+                salesReportResults.appendChild(table);
+            }
+        }
+        // <td>${result.orderItems.map(item => item.product.category.name).join(', ')}</td>
+        // <td>${result.orderItems.map(item => item.name).join(', ')}</td>
+
+    const generatePDFButton = document.getElementById("generatePDFButton");
+    generatePDFButton.addEventListener("click", () => {
+        const pdfContent = document.getElementById("salesReportResults");
+        const pdfOptions = {
+            margin: 1,
+            filename: 'sales_report.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        };
+        html2pdf().set(pdfOptions).from(pdfContent).save();
+    });
+
+    const generateXLButton = document.getElementById("generteXlButton");
+    generateXLButton.addEventListener("click", () => {
+        const xlContent = document.getElementById("salesReportResults");
+        const ws = XLSX.utils.table_to_sheet(xlContent);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Data');
+        XLSX.writeFile(wb, 'sales_report.xlsx');
+    });
+
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+    }
+</script>
+

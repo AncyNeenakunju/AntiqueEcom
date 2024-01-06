@@ -1,0 +1,98 @@
+<%- include('../layouts/head'); %>
+<body style="background-color:black">
+<div class="register " >
+
+  <div class="container mt-5 p-5 ms-auto">
+    <h1 class="text-white">SignUp</h1>
+    <hr class="bg-white">
+    <form method="post" autocomplete="on" action="register">
+      <!-- First name -->
+      <div class="box">
+        <label for="firstName" class="fl fontLabel">First Name:</label>
+        <div class="new iconBox">
+          <i class="fa fa-user" aria-hidden="true"></i>
+        </div>
+        
+        <div class="fr">
+          <input type="text" name="firstName" placeholder="First Name" class="textBox" autofocus="on" required>
+        </div>
+        <div class="clr"></div>
+      </div>
+      <!-- First name -->
+      <hr class="bg-white">
+      <!-- Second name -->
+      <div class="box">
+        <label for="secondName" class="fl fontLabel">Second Name:</label>
+        <div class="fl iconBox">
+          <i class="fa fa-user" aria-hidden="true"></i>
+        </div>
+        <div class="fr">
+          <input type="text" required name="secondName" placeholder="Last Name" class="textBox">
+        </div>
+        <div class="clr"></div>
+      </div>
+      <!-- Second name -->
+      <hr class="bg-white">
+      <!-- Phone No. -->
+      <div class="box">
+        <label for="phone" class="fl fontLabel">Phone No.:</label>
+        <div class="fl iconBox">
+          <i class="fa fa-phone-square" aria-hidden="true"></i>
+        </div>
+        <div class="fr">
+          <input type="text" required name="phoneNo" maxlength="10" placeholder="Phone No." class="textBox">
+        </div>
+        <div class="clr"></div>
+      </div>
+      <!-- Phone No. -->
+      <hr class="bg-white">
+      <!-- Email ID -->
+      <div class="box">
+        <label for ="email" class="fl fontLabel">Email ID:</label>
+        <div class="fl iconBox">
+          <i class="fa fa-envelope" aria-hidden="true"></i>
+        </div>
+        <div class="fr">
+          <input type="email" required name="email" placeholder="Email Id" class="textBox">
+        </div>
+        <div class="clr"></div>
+      </div>
+      <!-- Email ID -->
+      <hr class="bg-white">
+      <!-- Password -->
+      <div class="box">
+        <label for="password" class="fl fontLabel">Password:</label>
+        <div class="fl iconBox">
+          <i class="fa fa-key" aria-hidden="true"></i>
+        </div>
+        <div class="fr">
+          <input type="password" required name="password" placeholder="Password" class="textBox text-dark">
+          
+        </div>
+        <div class="clr"></div>
+      </div>
+      <!-- Password -->
+      <hr class="bg-white">
+      <!-- Submit Button -->
+      <div class="box">
+        <input type="Submit" name="Submit" class="submit" value="SUBMIT">
+      </div>
+      <!-- Submit Button -->
+      <% if (typeof message !=="undefined"){ %>
+        <label class="form-check-label" for="exampleCheck1"  style="color:white" ><%=message%></label>
+       <%}%>
+    </form>
+   </div>
+  <!-- Body of Form ends -->
+</div>
+<script>
+  // Check if the user already exists (simulated with a boolean variable)
+   // You need to replace this with your own logic
+
+  if (userExists) {
+    // Display a popup to inform the user
+    console.log("hello")
+    alert("User already exists. Please log in.");
+  }
+</script>
+</body>

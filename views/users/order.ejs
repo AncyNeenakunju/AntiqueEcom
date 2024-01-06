@@ -1,0 +1,95 @@
+
+<%- include('../layouts/header.ejs') %>
+	  
+   
+
+    <section class="h-100 gradient-custom">
+      <div class="container py-5 h-100" >
+        <div class="row d-flex justify-content-center align-items-center h-100" style="margin-top:200px">
+          <div class="col-lg-10 col-xl-8">
+            <div class="card" style="border-radius: 10px;">
+              <div class="card-header px-4 py-5">
+                <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: #a8729a;"></sp<%= order[0].userId.firstname%>an>!</h5>
+              </div>  
+
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <p class="lead fw-normal mb-0" style="color: #a8729a;">Order</p>
+                  <p class="small text-muted mb-0">OrderId : <%=order[0].id%> </p>
+                  <p class="small text-muted mb-0">shippingCharge :Rs.50</p>
+                </div>
+                <% for(j=0;j<order[0].orderItems.length;j++){ %>
+                <div class="card shadow-0 border mb-4">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <img src="/uploads/<%= order[0].orderItems[j].productId.images[0].filename%>"
+                          class="img-fluid" alt="Phone">
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="text-muted mb-0"><%= order[0].orderItems[j].productId.name %></p>
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="text-muted mb-0 small"></p>
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="text-muted mb-0 small"></p>
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                        <p class="text-muted mb-0 small">Qty: <%= order[0].orderItems[j].quantity%></p>
+                      </div>
+                      <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <% if (order[0].orderItems[j].price) { %>
+                        <p class="text-muted mb-0 small">
+                            <span class="original-price" style="text-decoration: line-through;">Rs<%= order[0].orderItems[j].productId.price %></span>
+                            <span class="offer-price">Rs<%= order[0].orderItems[j].price %></span>
+                          
+                        </p>
+                    <% } else { %>
+                        <p class="text-muted mb-0 small">Rs<%= order[0].orderItems[j].productId.price %></p>
+                    <% } %>
+                    </div>
+                    </div>
+                    </div>
+                    <%}%>
+               
+    
+                <div class="d-flex justify-content-between pt-2">
+                  <p class="fw-bold mb-0">Order Details</p>
+                  <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span> <%=order[0].totalAmount%></p>
+                </div>
+    
+              
+              </div>
+              <div class="card-footer border-0 px-4 py-5"
+                style="background-color: black; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                <p class="small text-muted mb-0">OrderId: <%=order[0].id%></p>
+                <p class="small text-muted mb-0">ShipingAddress:
+                 <%=order[0].shippingAddress.name %>&nbsp;
+                  <%=order[0].shippingAddress.houseNo %> <%=order[0].shippingAddress.place %> <%=order[0].shippingAddress.postOffice %>
+                  <%=order[0].shippingAddress.postalCode %></p>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="mt-5">
+      <%- include('../layouts/footer.ejs') %>
+</div>
+
+    <!-- ... (your existing code) ... -->
+   
+       
+
+  
+   
+    
+
+  
+ <script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/tiny-slider.js"></script>
+<script src="js/custom.js"></script>
+	</body>
+</html>

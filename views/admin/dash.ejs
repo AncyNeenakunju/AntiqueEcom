@@ -1,0 +1,140 @@
+<%- include('../layouts/adminhead.ejs', { currentPage: 'dashboard' }) %>
+<% const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"]; %>
+
+
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Sale</p>
+                    <h6 class="mb-0"><%= todaySales %></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Sale</p>
+                    <h6 class="mb-0"><%= totalSales %></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Revenue</p>
+                    <h6 class="mb-0">₹<%= todayRevenue.toLocaleString() %></h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Revenue</p>
+                    <h6 class="mb-0">₹<%= totalRevenue.toLocaleString() %></h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sale & Revenue End -->
+
+
+<!-- Sales Chart Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light text-center rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">Sales Chart</h6>
+                    
+                </div>
+                <canvas id="monthly-sales"></canvas>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light text-center rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">Revenue Chart</h6>
+                    
+                </div>
+                <canvas id="monthly-revenue"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sales Chart End -->
+
+
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <!-- Add a link to the Sales Report page -->
+        <a href="salesreportpdf" class="btn btn-primary">Go to Sales Report</a>
+    </div>
+</div>
+<!-- Recent Sales End -->
+
+<!-- Footer Start -->
+
+
+          
+       
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        //sales chart
+        var ctx3 = $("#monthly-sales").get(0).getContext("2d");
+        var salesLabels = [<%- filledMonthlySales.map(entry => '"' + monthNames[entry._id - 1] + '"') %>];
+        var salesData = [<%- filledMonthlySales.map(entry => entry.count) %>];
+
+        var myChart3 = new Chart(ctx3, {
+            type: "bar",
+            data: {
+                labels: salesLabels,
+                datasets: [{
+                    label: "Sales",
+                    data: salesData,
+                    backgroundColor: "rgba(0, 156, 255, .7)",
+                }],
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        //revenue chart
+        var ctx4 = $("#monthly-revenue").get(0).getContext("2d");
+        var revenueLabels = [<%- filledMonthlyRevenue.map(entry => '"' + monthNames[entry._id - 1] + '"') %>];
+        var revenueData = [<%- filledMonthlyRevenue.map(entry => entry.total) %>];
+
+        var myChart4 = new Chart(ctx4, {
+            type: "line",
+            data: {
+                labels: revenueLabels,
+                datasets: [{
+                    label: "Revenue",
+                    data: revenueData,
+                    backgroundColor: "rgba(0, 156, 255, .5)",
+                    fill: true,
+                }],
+            },
+            options: {
+                responsive: true
+            }
+        });
+    });
+</script>
+
+
+
+</html>

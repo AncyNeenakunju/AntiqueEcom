@@ -1,0 +1,78 @@
+
+<%- include('../layouts/adminhead'); %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script defer src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script defer src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<script>
+  $(document).ready(function(){
+    $('#example').DataTable();
+  });
+</script>
+
+<div class="col-md-12" style="padding:15px;">
+  <div class="col-12 tm-block-col">
+    <div class="">
+        <h2 class="">Orders</h2>
+        <table id="example" class="table table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th class="order-date">Order Date</th>
+                    <th class="order-id">Order ID</th>
+                    <th class="item-name">Customer</th>
+                    <th class="total-amount">Total Amount</th>
+                    <th class="payment-method">Payment Method</th>
+                    
+                    <th class="order-details"></th>
+                   
+                </tr>
+            </thead>
+            <% if (order.length > 0) {
+                for (let i = 0; i < order.length; i++) { %>
+            <tbody>
+
+                <tr>
+                   
+                    <td class="min-width"><%= (new Date(order[i].orderDate)).toLocaleDateString('en-GB') %></td>
+                    <td class="min-width"><%= order[i]._id.toString().slice(-4)%></td>
+                    <td class="min-width"><%= order[i].userId.firstname + ' ' + order[i].userId.lastname %></td>
+                    <td class="min-width" style="background-color: #7eb419; color: #fff;"><%=order[i].totalAmount%></td>
+                    <td class="min-width"><%= order[i].paymentMethod %></td>
+                    <td class="btn-link "><a href="/admin/orderDetail?id=<%= order[i]._id %>" style="color:orange">OrderDetails</a></td>
+                   
+                </tr>
+                <% } %>
+                <% }  else { %>
+                <tr>
+                    <td colspan="7">
+                        <h3>No orders</h3>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+
+
+        </table>
+    </div>
+</div>
+</div>
+</div>
+  </div>
+  </div>
+ 
+  <!-- jQuery -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/tiny-slider.js"></script>
+<script src="js/custom.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    var $ = jQuery.noConflict();
+  </script>

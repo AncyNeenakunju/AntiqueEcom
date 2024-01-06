@@ -1,0 +1,323 @@
+<div id="productContainer">
+<%- include('../layouts/head.ejs') %>
+  
+  
+  <main class="container-fluid mb-3" >
+    <div class="row p-2">
+      
+        <!--Items Filter-->
+        <div class="col-12 col-sm-4 col-lg-3">
+           <div class="card">
+             <form method="post" class="p-1" id="form :input">
+          
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" name="q" id="searchInput">
+                
+          
+               <section>
+                 <span class="text-muted font-weight-bold">Category</span>
+                 <div class="col-12">
+                  <% for(i=0;i<category.length;i++) { %>
+                   <div class="form-check">
+                     <input class="form-check-input" type="checkbox" name="category" value="<%=category[i].categoryname%>" id="categorya">
+                     <label class="form-check-label" for="categorya">
+                       <%=category[i].categoryname %>
+                     </label>
+                   </div>
+                   <% } %>
+                   
+                   
+                 </div>
+               </section>
+                <section class="mt-2">
+                  
+                  <span class="text-muted font-weight-bold">Customer Ratings</span>
+                  <div class="col-12">
+                     <div class="custom-control custom-radio">
+                      <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" value="4">
+                      <label class="custom-control-label" for="customRadio2">4 * & up</label>
+                    </div>
+                      <div class="custom-control custom-radio">
+                      <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input" value="3">
+                      <label class="custom-control-label" for="customRadio3">3 * & up</label>
+                    </div>
+                      <div class="custom-control custom-radio">
+                      <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input" value="2" >
+                      <label class="custom-control-label" for="customRadio4">2 * & up</label>
+                    </div>
+                      <div class="custom-control custom-radio">
+                      <input type="radio" id="customRadio5" name="customRadio" class="custom-control-input"  value="1">
+                      <label class="custom-control-label" for="customRadio5">1 * & up</label>
+                    </div> 
+                  </div>
+               </section>
+               <section class="mt-2">
+                 <span class="text-muted font-weight-bold">Price Range</span>
+                 <div class="d-flex-block">
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="priceRange" value="0-1000" id="priceRange0-50">
+                      <label class="form-check-label" for="priceRange0-50">Rs0 - Rs1000</label>
+                  </div>
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="priceRange" value="1000-2000" id="priceRange51-100">
+                      <label class="form-check-label" for="priceRange51-100">Rs1000 - Rs2000</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="priceRange" value="2000-3000" id="priceRange51-100">
+                    <label class="form-check-label" for="priceRange51-100">Rs2000 - Rs3000</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="priceRange" value="3000-" id="priceRange51-100">
+                  <label class="form-check-label" for="priceRange51-100">Rs3000& above</label>
+              </div>
+                  <!-- Add more checkboxes for other price ranges -->
+              </div>
+               </section>
+               <section class="mt-2">
+                
+                 </section>
+          </div>
+        </form>
+        </div>
+        <!--End Items Filter-->
+        
+        <!--Items Container-->
+        <div class="col-12 col-sm-8 col-lg-9">
+          <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+              <span class="text-white"><%=products.length %> Items</span>
+            
+            </div>
+
+           <div>
+              <span class="mr-1 text-white">Sort by</span>
+              <select class="custom-select" name="custom" id="sortDropdown">
+                <option class="disabled"></option>
+                <option value="Ascending - Price">Ascending - Price</option>
+                <option value="Descending - Price">Descending - Price</option>
+                <option value="Ascending - Ratings">Ascending - Ratings</option>
+                <option value="Descending - Ratings">Descending - Ratings</option>
+              </select>
+            </div>
+          </div>
+      
+          
+          <!--Items-->
+          <div class="row mt-3" > 
+            <% for (let i = 0; i < products.length; i++) { %>
+          <div class="col-sm-6 col-md-4 card">
+            <figure>
+              <div class="img-wrap text-center"> 
+          
+                  <% if(offer[i]){ %>
+                <span class="badge badge-danger position-absolute mt-2 ml-2"><%=offer[i].offerName%></span>
+                <% } %>
+             <a href="/productdetails?id=<%=products[i]._id%>&intent=product ">  <img  id="productImage1" src="<%=imageUrls[i]%>" alt="Card image cap" data-zoom="<%=imageUrls[i]%>"></a>
+              </div>
+              <figcaption>
+                <div class="">
+                  <a href="#" class="title p-1 text-dark"><%=products[i].name %></a>
+                  <div class="p-1">
+                    <span class="text-muted font-weight-bold">$<%=products[i].price %></span>
+                    
+                  </div>
+                </div>
+                <div class="w-100 d-flex ">
+                  <a href="/productdetails?id=<%=products[i]._id%>&intent=product " class="btn btn-dark w-70 mr-2">
+                    <i class="fa fa-shopping-cart"></i>
+                  </a>
+                  
+                   <a class="btn btn-dark w-70" href="/productdetails?id=<%=products[i]._id%>&intent=product "><i class="fa fa-heart"></i></a>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+          <%} %>
+         </div>
+          <!--End Items-->
+          
+        </div> 
+        <!--End Items Container-->
+      <!--Pagination-->
+      <!--Pagination-->
+<div class="col-12 mt-3">
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <% if (currentPage > 1) { %>
+        <li class="page-item">
+          <a class="page-link" href="/productlists?page=<%= currentPage - 1 %>" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      <% } %>
+
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+          <a class="page-link" href="/productlists?page=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
+
+      <% if (currentPage < totalPages) { %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      <% } %>
+    </ul>
+  </nav>
+</div>
+<!--End Pagination-->
+
+      <!--End Pagination-->
+    </div>
+  </main>
+  
+  
+  
+  
+  
+    <!--End Top Footer-->
+    <div class="mt-5">
+      <%- include('../layouts/footer.ejs') %>
+</div>
+    
+</div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+
+      const images1 = document.querySelectorAll('[data-zoom]');
+      const zoom = mediumZoom(images1);
+      images1.forEach(function (img) {
+          img.addEventListener('load', function () {
+              const canvas = document.createElement("canvas");
+              const ctx = canvas.getContext("2d");
+              let image = new Image();
+              image.src = img.src;
+
+              // Get the width and height of the image
+              const width = image.width;
+              const height = image.height;
+
+              // Set the canvas dimensions to match the image
+              canvas.width = width;
+              canvas.height = height;
+
+              // Correct the orientation based on EXIF data
+              EXIF.getData(image, function () {
+                  const orientation = EXIF.getTag(this, "Orientation");
+
+                  if (orientation >= 5 && orientation <= 8) {
+                      // Swap width and height for rotated images
+                      canvas.width = height;
+                      canvas.height = width;
+                  }
+
+                  switch (orientation) {
+                      case 2:
+                          // Horizontal flip
+                          ctx.transform(-1, 0, 0, 1, width, 0);
+                          break;
+                      case 3:
+                          // 180° rotation
+                          ctx.transform(-1, 0, 0, -1, width, height);
+                          break;
+                      case 4:
+                          // Vertical flip
+                          ctx.transform(1, 0, 0, -1, 0, height);
+                          break;
+                      case 5:
+                          // 90° counter-clockwise and vertical flip
+                          ctx.transform(0, 1, 1, 0, 0, 0);
+                          break;
+                      case 6:
+                          // 90° clockwise
+                          ctx.transform(0, 1, -1, 0, height, 0);
+                          break;
+                      case 7:
+                          // 90° clockwise and vertical flip
+                          ctx.transform(0, -1, -1, 0, height, width);
+                          break;
+                      case 8:
+                          // 90° counter-clockwise
+                          ctx.transform(0, -1, 1, 0, 0, width);
+                          break;
+                      default:
+                          // Normal orientation
+                          ctx.transform(1, 0, 0, 1, 0, 0);
+                  }
+              });
+
+              // Draw the image on the canvas with corrected orientation
+              ctx.drawImage(image, 0, 0, width, height);
+
+              // Replace the image source with the canvas data
+              img.src = canvas.toDataURL("image/jpeg");
+          });
+      });
+</script>
+<script>
+  function debounce(func, delay) {
+    let timeoutId;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(context, args);
+        }, delay);
+    };
+}
+      $(document).ready(function () {
+       
+  // Add an event listener to the form inputs
+  $("form :input").on("input change", function () {
+    // Get the form data
+     event.preventDefault();
+    const formData = $("form").serialize();
+       console.log(formData)
+    // Make an AJAX request to the server to fetch filtered results
+    $.ajax({
+      type: "post",
+      url: "/productlists",
+      data: formData,
+      success: function (data) {
+        // Replace the content of the product container with the new results
+        $("#productContainer").html(data);
+           console.log(data)
+      },
+      error: function (error) {
+        console.error("Error performing search:", error);
+      },
+    });
+  });
+
+  // Add an event listener to the sort dropdown
+  $("#sortDropdown").on("change", function () {
+    event.preventDefault();
+    const sortOption = $(this).val();
+      console.log(sortOption)
+    // Make an AJAX request to the server to fetch sorted results
+    $.ajax({
+      type: "post",
+      url: "/productlists",
+      data: { sort: sortOption },
+      success: function (data) {
+        // Replace the content of the product container with the new results
+        $("#productContainer").html(data);
+        console.log(data);
+      },
+      error: function (error) {
+        console.error("Error performing sort:", error);
+      },
+    });
+  });
+});
+
+</script>
+
+
+
+</script>
+</footer>
+</body>
+</html>     
