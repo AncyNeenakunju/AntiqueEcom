@@ -33,11 +33,11 @@ app.use(errorHandler);
 //app.use(`${api}/products`,productRouter)
 
 
-const port = 80;
+const port = 8080;
 const domain = 'antique.com'; // replace with your actual domain
 
 // Updated code
-app.listen(port, '0.0.0.0', () => {
+app.listen(port, () => {
   console.log(api);
   console.log(`Server is running http://${domain}:${port}/api/v1`);
 });
