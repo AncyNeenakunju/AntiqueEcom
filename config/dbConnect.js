@@ -1,16 +1,19 @@
-const mongoose= require("mongoose")
+const mongoose = require("mongoose");
+require("dotenv/config");
 
-const dbconnect= ()=>{
-    try{
-    const conn=mongoose.connect("mongodb://127.0.0.1:27017/E-SHOP")
-    console.log("DB connected succesfully")
-    }
-    catch(error){
-      console.log("Database error")
-    }
-}
+const connectionString = process.env.CONNECTION_STRING;
+const databaseName = "E-SHOP";
 
+const dbconnect = async () => {
+  try {
+    const conn = await mongoose.connect(`${connectionString}/${databaseName}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("DB connected successfully");
+  } catch (error) {
+    console.error("Database error:", error.message);
+  }
+};
 
-module.exports=(
-  dbconnect
-  )
+module.exports = dbconnect;
