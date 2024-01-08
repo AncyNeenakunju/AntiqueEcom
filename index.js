@@ -33,9 +33,9 @@ app.use(errorHandler);
 //app.use(`${api}/products`,productRouter)
 
 
-const port = 8081 // replace with your actual domain
+const port = 3000 // replace with your actual domain
 
-// Updated code
+// Updated code;
 app.listen(port, '0.0.0.0', () => {
   
   console.log(`Server is running`);
