@@ -36,7 +36,8 @@ app.use(errorHandler);
 const port = 80;
 const domain = 'antique.com'; // replace with your actual domain
 
-app.listen(port, () => {
+// Updated code
+app.listen(port, '0.0.0.0', () => {
   console.log(api);
   console.log(`Server is running http://${domain}:${port}/api/v1`);
 });
