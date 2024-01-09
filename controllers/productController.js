@@ -224,21 +224,29 @@ const cropAndUploadImage = async (image) => {
     `${image.filename}`,
   );
 
-  const sharpImage = sharp(imageFilePath);
-  console.log(imageFilePath);
-
-  const croppedImageBuffer = await sharpImage
-    .resize(300, 500)
-    .rotate() // Adjust dimensions as needed
-    .toBuffer();
   const croppedImageDir = path.join(__dirname, "../views/uploads");
   const croppedImageName = `cropped_${image.filename}`;
   const croppedImagePath = path.join(croppedImageDir, croppedImageName);
 
-  fs.writeFileSync(path.join(croppedImagePath), croppedImageBuffer);
+  try {
+    // Read the original image
+    const imageBuffer = fs.readFileSync(imageFilePath);
 
-  return croppedImagePath;
+    // Use Sharp to resize and rotate the image
+    await sharp(imageBuffer)
+      .resize(300, 500)
+      .rotate()
+      .toFile(croppedImagePath);
+
+    console.log("Image cropped successfully:", croppedImagePath);
+
+    return croppedImagePath;
+  } catch (cropError) {
+    console.error("Error cropping image:", cropError);
+    throw cropError; // Rethrow the error to handle it at a higher level if needed
+  }
 };
+
 
 const loaddetails = asyncHandler(async (req, res) => {
   
