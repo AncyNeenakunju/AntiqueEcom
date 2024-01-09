@@ -278,6 +278,7 @@ const loaddetails = asyncHandler(async (req, res) => {
     );
 
     imageUrls.push(productImageUrls);
+    console.log(imageUrls)
   } catch (cropError) {
     console.error("Error cropping images for a product:", cropError);
   }
