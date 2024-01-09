@@ -184,7 +184,7 @@ console.log(priceRanges)
           );
 
           imageUrls.push(productImageUrls);
-        
+          console.log(imageUrls);
         } 
         catch (cropError) {
           console.error("Error cropping images for a product:", cropError);
@@ -278,7 +278,7 @@ const loaddetails = asyncHandler(async (req, res) => {
     );
 
     imageUrls.push(productImageUrls);
-    console.log(imageUrls)
+    console.log(imageUrls);
   } catch (cropError) {
     console.error("Error cropping images for a product:", cropError);
   }
