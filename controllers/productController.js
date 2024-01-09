@@ -184,7 +184,9 @@ console.log(priceRanges)
           );
 
           imageUrls.push(productImageUrls);
-        } catch (cropError) {
+        
+        } 
+        catch (cropError) {
           console.error("Error cropping images for a product:", cropError);
         }
       }
@@ -239,7 +241,7 @@ const cropAndUploadImage = async (image) => {
       .toFile(croppedImagePath);
 
     console.log("Image cropped successfully:", croppedImagePath);
-
+ 
     return croppedImagePath;
   } catch (cropError) {
     console.error("Error cropping image:", cropError);
