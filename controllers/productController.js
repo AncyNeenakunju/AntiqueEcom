@@ -178,7 +178,7 @@ console.log(priceRanges)
           const productImageUrls = await Promise.all(
             product.images.map(async (image) => {
               const fullImageUrl = await cropAndUploadImage(image);
-             // const croppedImageUrl = fullImageUrl.split("views\\")[1];
+              const croppedImageUrl = fullImageUrl.split(path.sep + 'views' + path.sep)[1];
               return fullImageUrl ;
             }),
           );
