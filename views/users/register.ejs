@@ -1,98 +1,144 @@
-<%- include('../layouts/head'); %>
-<body style="background-color:black">
-<div class="register " >
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>Antqueee</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+      <!-- style css -->
+     <link rel="stylesheet" type="text/css" href="css/style.css">
+      <link rel="stylesheet" type="text/css" href="css/loginstyle.css">
+      <link rel="stylesheet" type="text/css" href="css/productdetail.css">
+   
+   
 
-  <div class="container mt-5 p-5 ms-auto">
-    <h1 class="text-white">SignUp</h1>
-    <hr class="bg-white">
-    <form method="post" autocomplete="on" action="register">
-      <!-- First name -->
-      <div class="box">
-        <label for="firstName" class="fl fontLabel">First Name:</label>
-        <div class="new iconBox">
-          <i class="fa fa-user" aria-hidden="true"></i>
-        </div>
-        
-        <div class="fr">
-          <input type="text" name="firstName" placeholder="First Name" class="textBox" autofocus="on" required>
-        </div>
-        <div class="clr"></div>
-      </div>
-      <!-- First name -->
-      <hr class="bg-white">
-      <!-- Second name -->
-      <div class="box">
-        <label for="secondName" class="fl fontLabel">Second Name:</label>
-        <div class="fl iconBox">
-          <i class="fa fa-user" aria-hidden="true"></i>
-        </div>
-        <div class="fr">
-          <input type="text" required name="secondName" placeholder="Last Name" class="textBox">
-        </div>
-        <div class="clr"></div>
-      </div>
-      <!-- Second name -->
-      <hr class="bg-white">
-      <!-- Phone No. -->
-      <div class="box">
-        <label for="phone" class="fl fontLabel">Phone No.:</label>
-        <div class="fl iconBox">
-          <i class="fa fa-phone-square" aria-hidden="true"></i>
-        </div>
-        <div class="fr">
-          <input type="text" required name="phoneNo" maxlength="10" placeholder="Phone No." class="textBox">
-        </div>
-        <div class="clr"></div>
-      </div>
-      <!-- Phone No. -->
-      <hr class="bg-white">
-      <!-- Email ID -->
-      <div class="box">
-        <label for ="email" class="fl fontLabel">Email ID:</label>
-        <div class="fl iconBox">
-          <i class="fa fa-envelope" aria-hidden="true"></i>
-        </div>
-        <div class="fr">
-          <input type="email" required name="email" placeholder="Email Id" class="textBox">
-        </div>
-        <div class="clr"></div>
-      </div>
-      <!-- Email ID -->
-      <hr class="bg-white">
-      <!-- Password -->
-      <div class="box">
-        <label for="password" class="fl fontLabel">Password:</label>
-        <div class="fl iconBox">
-          <i class="fa fa-key" aria-hidden="true"></i>
-        </div>
-        <div class="fr">
-          <input type="password" required name="password" placeholder="Password" class="textBox text-dark">
-          
-        </div>
-        <div class="clr"></div>
-      </div>
-      <!-- Password -->
-      <hr class="bg-white">
-      <!-- Submit Button -->
-      <div class="box">
-        <input type="Submit" name="Submit" class="submit" value="SUBMIT">
-      </div>
-      <!-- Submit Button -->
-      <% if (typeof message !=="undefined"){ %>
-        <label class="form-check-label" for="exampleCheck1"  style="color:white" ><%=message%></label>
-       <%}%>
-    </form>
-   </div>
-  <!-- Body of Form ends -->
-</div>
-<script>
-  // Check if the user already exists (simulated with a boolean variable)
-   // You need to replace this with your own logic
+      <!-- Responsive-->
+      <link rel="stylesheet" href="css/responsive.css">
+      <!-- fevicon -->
+      <link rel="icon" href="images/fevicon.png" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      
+      <link rel="stylesheet" href="css/owl.carousel.min.css">
+      <link rel="stylesheet" href="css/owl.theme.default.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+      <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+      <!-- Add these links to your HTML -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
 
-  if (userExists) {
-    // Display a popup to inform the user
-    console.log("hello")
-    alert("User already exists. Please log in.");
-  }
-</script>
-</body>
+
+      
+   </head>
+   <header>
+      <!--header section start -->
+      <div class="header_section">
+         <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <div class="collapse navbar-collapse " id="navbarNav">
+            <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+               </button>
+              
+                  <ul class="navbar-nav  ml-auto"> 
+                     <li class="nav-item ">
+                        <a class="nav-link" href="/">Home</a>
+                     </li>
+                     <li class="nav-item ">
+                        <a class="nav-link" href="/productlists">Products</a>
+                     </li>
+                     <li class="nav-item ">
+                        <a class="nav-link" href="/orders?intent=orders">Orders</a>
+                     </li>
+                     <li class="nav-item ">
+                        <a class="nav-link" href="/cartPage?intent=cart"><i id="cartIcon" class="fa fa-shopping-cart">
+                        </i></a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/Whsihlist?intent=whishlist"><i class="fa fa-heart"></i></a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/myprofile?intent=myprofile"><i class="fa fa-user"></i></a>
+                     </li>
+                    
+                  </ul>
+               </div>
+            </nav>
+            
+         </div>
+      </div>
+   
+      </header> 
+	  
+<div class="container">
+  <div class="row">
+      <div class="col-lg-3 col-md-2"></div>
+      <div class="col-lg-6 col-md-8 login-box">
+                    <div class="col-lg-12 login-title">
+              USER REGISTRATION
+          </div>
+
+          <div class="col-lg-12 login-form">
+              <div class="col-lg-12 login-form">
+               <% if (typeof referalCode !=="undefined"){ %>
+                  <form  action="/register?ref=<%=referalCode%>" method="post">
+                     <%} else{ %>
+                        <form  action="/register" method="post">
+                           <%} %>
+                    <div class="form-group">
+                        <label class="form-control-label">FirstName</label>
+                        <input type="text" class="form-control" name="firstName" i>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">FirstName</label>
+                        <input type="text" class="form-control" name="lastname" i>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-control-label">Mobile</label>
+                        <input type="number" class="form-control" name="mobile" i>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-control-label">Email</label>
+                      <input type="email" class="form-control" name="email" i>
+                  </div>
+                      <div class="form-group">
+                          <label class="form-control-label">PASSWORD</label>
+                          <input type="password" class="form-control" name="password" i>
+                      </div>
+                      <div class="form-group">
+                        <% if (typeof message !=="undefined"){ %>
+                          <label class="form-control-label" for="exampleCheck1"  ><%=message%></label>
+                         <%}%>
+                      </div>
+                      <div class="col-lg-12 loginbttm">
+                          <div class="col-lg-6 login-btm login-text">
+                              <!-- Error Message -->
+                          </div>
+                          <div class="col-lg-6 login-btm login-button">
+                              <button type="submit" class="btn btn-outline-primary">SUBMIT</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-2"></div>
+      </div>
+  </div>
+
+
+
+
