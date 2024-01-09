@@ -111,7 +111,7 @@
                   <% if(offer[i]){ %>
                 <span class="badge badge-danger position-absolute mt-2 ml-2"><%=offer[i].offerName%></span>
                 <% } %>
-             <a href="/productdetails?id=<%=products[i]._id%>&intent=product ">  <img  id="productImage1" src="/uploads/<%=products[i].images[0].filename%>" alt="Card image cap" data-zoom="<%=imageUrls[i]%>"></a>
+             <a href="/productdetails?id=<%=products[i]._id%>&intent=product ">  <img  id="productImage1" src="/uploads/<%=products[i].images[0].filename%>" alt="Card image cap" data-zoom="<%=imageUrls[i]%>" class="w-50 h-50"></a>
               </div>
               <figcaption>
                 <div class="">
