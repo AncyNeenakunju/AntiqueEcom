@@ -9,7 +9,7 @@ const sendmail= asyncHandler( async(email,link)=>{
          let transporter= nodemailer.createTransport({
              service:"gmail",
              auth:{
-               user:process.env.USER,
+               user:process.env.mygmail,
                pass:process.env.PASSWORD
              }
          
@@ -17,7 +17,7 @@ const sendmail= asyncHandler( async(email,link)=>{
          //SEND MAIL
           
          let info=await  transporter.sendMail({
-             from:process.env.USER,
+             from:process.env.mygmail,
              to:email,
              subject:"Account verification",
              text:"Welcome",
@@ -36,7 +36,7 @@ const sendmail= asyncHandler( async(email,link)=>{
  const sendotp= asyncHandler( async(email,otp)=>{
    try{
       
-        console.log(process.env.USER,process.env.PASSWORD)
+        console.log(process.env.mygmail,process.env.PASSWORD)
 
         let transporter= nodemailer.createTransport({
             service:"gmail",
@@ -49,7 +49,7 @@ const sendmail= asyncHandler( async(email,link)=>{
         //SEND MAIL
 
         let info=await  transporter.sendMail({
-         from:process.env.USER,
+         from:process.env.mygmail,
          to:email,
          subject:"Account verification",
          text:"Welcome",
