@@ -7,7 +7,7 @@ const sendmail= asyncHandler( async(email,link)=>{
 
            console.log(link)
          let transporter= nodemailer.createTransport({
-             service:"Gmail",
+             service:"gmail",
              auth:{
                user:process.env.USER,
                pass:process.env.PASSWORD
@@ -39,7 +39,7 @@ const sendmail= asyncHandler( async(email,link)=>{
 
 
         let transporter= nodemailer.createTransport({
-            service:"Gmail",
+            service:"gmail",
             auth:{
               user:process.env.USER,
               pass:process.env.PASSWORD
