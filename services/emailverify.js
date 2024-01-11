@@ -36,7 +36,7 @@ const sendmail= asyncHandler( async(email,link)=>{
  const sendotp= asyncHandler( async(email,otp)=>{
    try{
       
-
+        console.log(process.env.USER,process.env.PASSWORD)
 
         let transporter= nodemailer.createTransport({
             service:"gmail",
