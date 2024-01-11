@@ -125,7 +125,7 @@ const insertUser= asyncHandler(async (req,res)=>{
               expiresAt: expirationTime
             });
            const tokenData= await token.save()
-            const link=`http://antique.com/confirm/${tokenData.token}`
+            const link=`http://oldwonder.shop/confirm/${tokenData.token}`
             await sendmail(userData.email,link)
           res.render("users/register.ejs",{message:"Registration is done. Please check your mail for verification"})
 
@@ -230,7 +230,7 @@ const sendforget=asyncHandler(async(req,res)=>{
         expiresAt: expirationTime
       });
      const tokenData= await token.save()
-      const link=`http://antique.com/resend-password?token=${tokenData.token}&intent=${intent}`
+      const link=`http://oldwonder.shop/resend-password?token=${tokenData.token}&intent=${intent}`
       await sendmail(userData.email,link)
        res.render("users/forget.ejs",{message:". Please check your mail for reset password",
          intent:intent
