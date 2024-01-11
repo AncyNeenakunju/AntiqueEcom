@@ -1,133 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-      <!-- basic -->
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <!-- mobile metas -->
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-      <!-- site metas -->
-      <title>Antqueee</title>
-      <meta name="keywords" content="">
-      <meta name="description" content="">
-      <meta name="author" content="">
-      <!-- bootstrap css -->
-      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-      <!-- style css -->
-	  <link rel="stylesheet" type="text/css" href="css/loginstyle.css">
-      
-      <link rel="stylesheet" type="text/css" href="css/style.css">
-      <link rel="stylesheet" type="text/css" href="css/productdetail.css">
-      
-      
-       
-      <!-- Responsive-->
-      <link rel="stylesheet" href="css/responsive.css">
-      <!-- fevicon -->
-      <link rel="icon" href="images/fevicon.png" type="image/gif" />
-      <!-- Scrollbar Custom CSS -->
-      <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
-      <!-- Tweaks for older IEs-->
-      <!-- owl stylesheets --> 
-           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
-      <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800&display=swap" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>      
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/medium-zoom@latest/dist/medium-zoom.min.js"></script>
-	<style>
-/* Style for the overlay background */
-.overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-}
-
-/* Style for the modal box */
-.custom-modal {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px; /* Adjust the width as needed */
-  background-color: #fff;
-  padding: 20px;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 2;
-}
-
-.modal-content {
-  text-align: center;
-}
-
-.close {
-  cursor: pointer;
-}
-
-  
-</style>
-</head>
-<div>
-	<header >
-		<!--header section start -->
-		<div class="header_section">
-		   <div class="container-fluid">
-			  <nav class="navbar navbar-expand-lg navbar-light bg-black">
-				 <div class="collapse navbar-collapse " id="navbarNav">
-			  <div class=><a href="index.html"><img src="images/logo.png"></a></div> 
-				 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"aria-expanded="false" aria-label="Toggle navigation">
-				 <span class="navbar-toggler-icon"></span>
-				 </button>
-				
-					<ul class="navbar-nav  ml-auto"> 
-					   <li class="nav-item ">
-						  <a class="nav-link  text-white" href="/">Home</a>
-					   </li>
-					   <li class="nav-item ">
-						  <a class="nav-link text-white" href="/productlists">Products</a>
-					   </li>
-					   <li class="nav-item ">
-						  <a class="nav-link  text-white" href="/orders?intent=orders">Orders</a>
-					   </li>
-					   <li class="nav-item ">
-						  <a class="nav-link  text-white" href="/cartPage?intent=cart"><i class="fa fa-shopping-cart"></i> <span class="badge"  ></span></i></a>
-					   </li>
-					   <li class="nav-item">
-						  <a class="nav-link text-white" href="/Whsihlist?intent=whishlist"><i class="fa fa-heart"></i></a>
-					   </li>
-					   <li class="nav-item">
-						  <a class="nav-link text-white" href="/profile?intent=profile"><i class="fa fa-user"></i></a>
-					   </li>
-					   <li class="nav-item">
-						  <a class="nav-link text-white" href="/logout">Logout</a>
-					   </li>
-					</ul>
-				 </div>
-			  </nav>
+<%- include('../layouts/header.ejs') %>
+	  
+		<style>
+			/* Style for the overlay background */
+			.overlay {
+			  display: none;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  width: 100%;
+			  height: 100%;
+			  background: rgba(0, 0, 0, 0.5);
+			  z-index: 1;
+			}
+			
+			/* Style for the modal box */
+			.custom-modal {
+			  display: none;
+			  position: fixed;
+			  top: 50%;
+			  left: 50%;
+			  transform: translate(-50%, -50%);
+			  width: 300px; /* Adjust the width as needed */
+			  background-color: #fff;
+			  padding: 20px;
+			  border: 1px solid #ddd;
+			  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			  z-index: 2;
+			}
+			
+			.modal-content {
+			  text-align: center;
+			}
+			
+			.close {
+			  cursor: pointer;
+			}
+			
 			  
-		   </div>
-		</div>
-	 
-		</header>
-	  
-	  
-  
+			</style>
 
-    <div class="pd-wrap" row>
+    <div class="pd-wrap" style="margin-top:300px">
 		<div class="container col-md-6 ">
 	        <div class="heading-section">
 	            <h2>Product Details</h2>
