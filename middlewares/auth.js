@@ -1,5 +1,4 @@
-const IsLogin =async(req,res,next)=>{
-  try {
+const IsLogin = (req, res, next) => {
     if (req.session.userId) {
         // User is logged in
         next();
@@ -8,41 +7,28 @@ const IsLogin =async(req,res,next)=>{
         console.log("no session");
         next(); // Only call next if you want to proceed to the next middleware/route
     }
-} catch (error) {
-    console.log(error.message);
-    res.status(500).send("Internal Server Error");
-}
-}
+};
 
 
 
-const IsLogout =async(req,res,next)=>{
-    try{
-        
-       if(req.session.userId)
-       {    
-         next()
-       } 
-          else{
-         if(req.query.id){
-         res.redirect(`/login?intent=${req.query.intent}&id=${req.query.id}`)
-    
-         }
-         else{
-            
-             
-            res.redirect(`/login?intent=${req.query.intent}`)
-             
-         }
+const IsLogout = (req, res, next) => {
+    try {
+        if (req.session.userId) {
+            next();
+        } else {
+            if (req.query.id) {
+                res.redirect(`/login?intent=${req.query.intent}&id=${req.query.id}`);
+            } else {
+                res.redirect(`/login?intent=${req.query.intent}`);
+            }
 
-        
-          next();
-            }  
+            next();
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Internal Server Error");
     }
-    catch(error){
-        console.log(error.message)
-    }
-}
+};
 
 
 module.exports={
