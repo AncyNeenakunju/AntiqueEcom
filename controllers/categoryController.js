@@ -12,7 +12,7 @@ const loadCategory=asyncHandler(async(req,res)=>{
 
     const currentPage = "dashboard";
 console.log(category,offers)
-    res.render("admin/Category.ejs", {
+    res.render("admin/category.ejs", {
         category: category || [], // If category is empty, pass an empty array
         currentPage,
         offers: offers || [] // If offers is empty, pass an empty array
