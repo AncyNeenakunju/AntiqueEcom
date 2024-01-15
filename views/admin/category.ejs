@@ -70,44 +70,39 @@
 
                         </tr>
                       </thead>
-                      <tbody>
-                        <% for(i=0;i<category.length;i++) {%>
-                  
-  
-                          <td class="tm-product-name"><%= category[i].categoryname%></td>
-                          <% if (!category[i].offer){%>
-                            <td><p>NoOffer</p></td>
-                            <%}else{%>
-                              <td><%= category[i].offer.toString().slice(-4) %></td>   
-                              <%}%>
-                           
-                           <td class="text-center" style="display: flex;
-                          align-items: center;
-                          ">
-                        
-                        
-                              <select id="offer_<%= category[i]._id %>" name="offer" class="form-control w-25 h-25" style="margin-right:10px" placeholder="SelectOffer">
-                                <option value="" selected disabled>Select an Offer</option>
-                               
-                                <% for (const offer of offers) { %>
+                      <% for (let i = 0; i < category.length; i++) { %>
+                        <tr>
+                            <td class="tm-product-name"><%= category[i].categoryname %></td>
                             
-                                  <option value="<%= offer._id %>"><%= offer.offerName %></option>
-                                <% } %>
-                              </select>
-                          
-                            <button data-categoryid="<%=category[i]._id%>" class="tm-product-delete-link add-offer-button" style="margin-right: 10px;">
-                              <i class="fas fa-plus tm-product-delete-icon "></i></button>
-                              </td>
-                          
-                              <td>
-                            <button data-itemid="<%=category[i]._id%>" class="tm-product-delete-link deletecategorybutton" style="margin-right: 10px;">
-                              <i class="far fa-trash-alt tm-product-delete-icon"></i> </button>
-                              <a data-itemid="<%=category[i]._id%>" class="tm-product-delete-link editcategorybutton" href="/admin/editcategory?id=<%=category[i]._id%>">
-                                <i class="far fa-edit tm-product-edit-icon"></i>
-                              </a>
-                          </td>
+                            <% if (!category[i].offer) { %>
+                                <td><p>NoOffer</p></td>
+                            <% } else { %>
+                                <td><%= category[i].offer.toString().slice(-4) %></td>
+                            <% } %>
+                
+                            <td class="text-center" style="display: flex; align-items: center;">
+                                <select id="offer_<%= category[i]._id %>" name="offer" class="form-control w-25 h-25" style="margin-right:10px" placeholder="SelectOffer">
+                                    <option value="" selected disabled>Select an Offer</option>
+                                    <% for (const offer of offers) { %>
+                                        <option value="<%= offer._id %>"><%= offer.offerName %></option>
+                                    <% } %>
+                                </select>
+                                <button data-categoryid="<%= category[i]._id %>" class="tm-product-delete-link add-offer-button" style="margin-right: 10px;">
+                                    <i class="fas fa-plus tm-product-delete-icon "></i>
+                                </button>
+                            </td>
+                
+                            <td>
+                                <button data-itemid="<%= category[i]._id %>" class="tm-product-delete-link deletecategorybutton" style="margin-right: 10px;">
+                                    <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                                </button>
+                                <a data-itemid="<%= category[i]._id %>" class="tm-product-delete-link editcategorybutton" href="/admin/editcategory?id=<%= category[i]._id %>">
+                                    <i class="far fa-edit tm-product-edit-icon"></i>
+                                </a>
+                            </td>
                         </tr>
-                       <% }%>
+                    <% } %>
+                </tbody>
                       </tbody>
                     </table>
                   </div>
