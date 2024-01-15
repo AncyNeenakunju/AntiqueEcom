@@ -5,12 +5,13 @@ const asyncHandler=require("express-async-handler")
 
 
 const loadCategory=asyncHandler(async(req,res)=>{
-    const offers = await Offer.find();
+   
     try{
+     const offers = await Offer.find();
     const category = await Category.find();
 
     const currentPage = "dashboard";
-
+console.log(category,offers)
     res.render("admin/Category.ejs", {
         category: category || [], // If category is empty, pass an empty array
         currentPage,
