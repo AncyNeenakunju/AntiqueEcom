@@ -5,15 +5,23 @@ const asyncHandler=require("express-async-handler")
 
 
 const loadCategory=asyncHandler(async(req,res)=>{
-    const offers=await Offer.find()
+    const offers = await Offer.find();
+    try{
     const category = await Category.find();
-   
-    const currentPage="dashboard"
-    res.render("admin/Category.ejs",{
-        category:category,
+
+    const currentPage = "dashboard";
+
+    res.render("admin/Category.ejs", {
+        category: category || [], // If category is empty, pass an empty array
         currentPage,
-        offers
-      }) 
+        offers: offers || [] // If offers is empty, pass an empty array
+    });
+} catch (error) {
+    // Handle any errors that occurred during fetching data
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+}
+
 }) 
 
 const loadeditCategory=asyncHandler(async(req,res)=>{
