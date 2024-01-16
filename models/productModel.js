@@ -90,22 +90,8 @@ const productSchema = new Schema({
   stockQuantity: {
     type: Number,
   },
-  keywords: {
-    type: [String], // An array of keywords/tags
-  },
-  warrantyInfo: {
-    type: String,
-  },
-  features: {
-    type: [String],
-  },
-  specifications: {
-    type: Map, // A map of technical specifications
-  },
-  relatedProducts: {
-    type: [mongoose.Schema.Types.ObjectId], // Store related product IDs
-    ref: "Product", // Reference to the Product collection
-  },
+  
+  
   // Add more fields as necessary
 });
 
