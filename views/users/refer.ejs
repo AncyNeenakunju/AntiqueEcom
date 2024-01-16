@@ -88,7 +88,7 @@
     // Function to share via email
     function shareViaEmail() {
       const referralCode = document.getElementById('referralCode').textContent;
-      const signupLink = `antique.com/register?ref=${referralCode}`;
+      const signupLink = `https://oldwonder.shop/register?ref=${referralCode}`;
       const subject = encodeURIComponent('Check out my referral code!');
       const body = encodeURIComponent(`Hey! Sign up using my referral code: ${signupLink}`);
       window.location.href = `mailto:?subject=${subject}&body=${body}`;
@@ -97,7 +97,7 @@
     // Function to share via WhatsApp
     function shareViaWhatsApp() {
       const referralCode = document.getElementById('referralCode').textContent;
-      const signupLink = `antique.com/register?ref=${referralCode}`;
+      const signupLink = `https://oldwonder.shop/register?ref=${referralCode}`;
       const message = encodeURIComponent(`Hey! Sign up using my referral code: ${signupLink}`);
       window.location.href = `https://wa.me/?text=${message}`;
     }
