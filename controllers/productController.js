@@ -375,7 +375,7 @@ const loadeditproducts = asyncHandler(async (req, res) => {
         const productImageUrls = await Promise.all(
           productData.images.map(async (image) => {
             const FullImageUrl = await cropAndUploadImage(image);
-            const croppedImageUrl = FullImageUrl.split("views\\")[1];
+            const croppedImageUrl = FullImageUrl.split(path.sep + 'views' + path.sep)[1];
             return croppedImageUrl;
           }),
         );
