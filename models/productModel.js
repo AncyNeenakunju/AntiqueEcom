@@ -90,12 +90,9 @@ const productSchema = new Schema({
   stockQuantity: {
     type: Number,
   },
-  
-  
-  // Add more fields as necessary
 });
 
-// Create a Product model based on the productSchema
+
 const Product = mongoose.model("Product", productSchema);
 
 module.exports = Product;
